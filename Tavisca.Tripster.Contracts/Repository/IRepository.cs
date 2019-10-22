@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.Contracts.Repository
 {
@@ -11,6 +12,7 @@ namespace Tavisca.Tripster.Contracts.Repository
         void Add(TEntity entity);
         void Delete(Guid id);
         void Update(Guid id, TEntity entity);
+        List<Trip> GetAllTrips();
     }
 
 }

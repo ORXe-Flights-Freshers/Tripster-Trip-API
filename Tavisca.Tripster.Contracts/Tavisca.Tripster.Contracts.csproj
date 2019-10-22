@@ -8,4 +8,8 @@
     <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tavisca.Tripster.Data\Tavisca.Tripster.Data.csproj" />
+  </ItemGroup>
+
 </Project>
