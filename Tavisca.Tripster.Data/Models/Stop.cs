@@ -9,8 +9,8 @@ namespace Tavisca.Tripster.Data.Models
         public string StopId { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }
-        public long Arrival { get; set; }
-        public long Departure { get; set; }
+        public string Arrival { get; set; }
+        public string Departure { get; set; }
         public List<Place> Places { get; set; }
     }
 }
