@@ -7,6 +7,8 @@ namespace Tavisca.Tripster.Data.Models
 {
     public class Place
     {
+        [BsonIgnoreIfDefault]
+        [BsonElement("_id")]
         public string PlaceId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
