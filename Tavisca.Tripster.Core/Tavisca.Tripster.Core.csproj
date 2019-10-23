@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tavisca.Tripster.Contracts\Tavisca.Tripster.Contracts.csproj" />
+    <ProjectReference Include="..\Tavisca.Tripster.MongoDB\Tavisca.Tripster.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>
