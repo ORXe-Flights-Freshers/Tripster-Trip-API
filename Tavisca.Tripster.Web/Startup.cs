@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Tavisca.Tripster.Contracts.DatabaseSettings;
+using Tavisca.Tripster.Contracts.Service;
+using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.MongoDB.UnitOfWork;
 
 namespace Tavisca.Tripster.Web
@@ -32,7 +29,23 @@ namespace Tavisca.Tripster.Web
             services.AddSingleton<TripDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
             services.AddSingleton<TripUnitOfWork>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<ITripService, TripService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
+            services.AddMvc()
+                            .AddMvcOptions(o => o.OutputFormatters.Add(
+                        new XmlDataContractSerializerOutputFormatter()
+                        ));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -45,6 +58,7 @@ namespace Tavisca.Tripster.Web
             {
                 app.UseHsts();
             }
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
             app.UseMvc();
         }
