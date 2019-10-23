@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Tavisca.Tripster.Contracts.DatabaseSettings;
+using Tavisca.Tripster.MongoDB.UnitOfWork;
 
 namespace Tavisca.Tripster.Web
 {
@@ -21,14 +23,18 @@ namespace Tavisca.Tripster.Web
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<TripDatabaseSettings>(
+        Configuration.GetSection(nameof(TripDatabaseSettings)));
+
+            services.AddSingleton<TripDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
+            services.AddSingleton<TripUnitOfWork>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -37,10 +43,8 @@ namespace Tavisca.Tripster.Web
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseMvc();
         }

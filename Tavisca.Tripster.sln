@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Tripster.Web", "Tavisca.Tripster.Web\Tavisca.Tripster.Web.csproj", "{9259E545-75FA-4EC8-B03F-4E3F20F82D42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Tripster.Web", "Tavisca.Tripster.Web\Tavisca.Tripster.Web.csproj", "{9259E545-75FA-4EC8-B03F-4E3F20F82D42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Tripster.Contracts", "Tavisca.Tripster.Contracts\Tavisca.Tripster.Contracts.csproj", "{1C45AA41-325E-4516-9206-1E6C4E75A509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Tripster.Contracts", "Tavisca.Tripster.Contracts\Tavisca.Tripster.Contracts.csproj", "{1C45AA41-325E-4516-9206-1E6C4E75A509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Tripster.Data", "Tavisca.Tripster.Data\Tavisca.Tripster.Data.csproj", "{F3F856B9-B366-43E4-9DD0-4D37AA0410CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Tripster.Data", "Tavisca.Tripster.Data\Tavisca.Tripster.Data.csproj", "{F3F856B9-B366-43E4-9DD0-4D37AA0410CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Tripster.Core", "Tavisca.Tripster.Core\Tavisca.Tripster.Core.csproj", "{1F607D51-5F20-4A71-85E5-74A0E52BDFF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Tripster.Core", "Tavisca.Tripster.Core\Tavisca.Tripster.Core.csproj", "{1F607D51-5F20-4A71-85E5-74A0E52BDFF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Tripster.Tests", "Tavisca.Tripster.Tests\Tavisca.Tripster.Tests.csproj", "{2EEA449D-0851-41D2-89FF-50302F41E047}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tavisca.Tripster.Tests", "Tavisca.Tripster.Tests\Tavisca.Tripster.Tests.csproj", "{2EEA449D-0851-41D2-89FF-50302F41E047}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavisca.Tripster.MongoDB", "Tavisca.Tripster.MongoDB\Tavisca.Tripster.MongoDB.csproj", "{11A99D08-0D3D-4D9C-9858-62B32622E46C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2EEA449D-0851-41D2-89FF-50302F41E047}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EEA449D-0851-41D2-89FF-50302F41E047}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EEA449D-0851-41D2-89FF-50302F41E047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A99D08-0D3D-4D9C-9858-62B32622E46C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A99D08-0D3D-4D9C-9858-62B32622E46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A99D08-0D3D-4D9C-9858-62B32622E46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A99D08-0D3D-4D9C-9858-62B32622E46C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
