@@ -25,7 +25,7 @@ namespace Tavisca.Tripster.Web
         {
             services.Configure<TripDatabaseSettings>(
         Configuration.GetSection(nameof(TripDatabaseSettings)));
-
+            services.AddSingleton<TripDatabaseSettings>();
             services.AddSingleton<TripDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
             services.AddSingleton<TripUnitOfWork>();
