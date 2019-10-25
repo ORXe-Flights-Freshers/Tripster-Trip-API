@@ -59,7 +59,7 @@ namespace Tavisca.Tripster.Web
                 app.UseHsts();
             }
             app.UseCors("AllowAll");
-            app.UseHttpsRedirection();
+            
             app.UseMvc();
         }
     }

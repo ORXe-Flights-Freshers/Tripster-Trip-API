@@ -4,7 +4,7 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://3.14.69.62:54155",
+      "applicationUrl": "http://localhost:54155",
       "sslPort": 44332
     }
   },
@@ -20,8 +20,8 @@
     "Tavisca.Tripster.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
-      "applicationUrl": "http://3.14.69.62:5000",
+      "launchUrl": "api/trip",
+      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
