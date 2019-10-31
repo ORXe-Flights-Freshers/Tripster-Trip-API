@@ -7,8 +7,6 @@ namespace Tavisca.Tripster.Data.Models
 {
     public class Stop
     {
-        [BsonIgnoreIfDefault]
-        [BsonElement("_id")]
         public string StopId { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }

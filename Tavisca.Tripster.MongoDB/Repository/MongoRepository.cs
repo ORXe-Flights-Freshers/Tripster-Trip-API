@@ -12,10 +12,10 @@ namespace Tavisca.Tripster.MongoDB.Repository
         private string _collectionName;
         private IMongoCollection<TEntity> _collection;
 
-        public MongoRepository(IMongoDatabase database, string collectionName)
+        public MongoRepository(IMongoDatabase database)
         {
             _database = database;
-            _collectionName = collectionName;
+            _collectionName = typeof(TEntity).Name;
             _collection = _database.GetCollection<TEntity>(_collectionName);
         }
         public TEntity Get(Guid id)

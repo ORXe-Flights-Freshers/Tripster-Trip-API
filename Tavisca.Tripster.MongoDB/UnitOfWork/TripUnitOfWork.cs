@@ -12,20 +12,18 @@ namespace Tavisca.Tripster.MongoDB.UnitOfWork
     {
         private IMongoDatabase _database;
         private MongoRepository<Trip> _trips;
-        private string _collectionName;
 
         public TripUnitOfWork(TripDatabaseSettings databaseSettings)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
             _database = client.GetDatabase(databaseSettings.DatabaseName);
-            _collectionName = databaseSettings.CollectionName;
         }
 
         public MongoRepository<Trip> Trips
         {
             get
             {
-                if (_trips == null) _trips = new MongoRepository<Trip>(_database, _collectionName);
+                if (_trips == null) _trips = new MongoRepository<Trip>(_database);
                 return _trips;
             }
         }

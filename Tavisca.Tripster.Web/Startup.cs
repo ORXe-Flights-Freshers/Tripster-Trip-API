@@ -53,6 +53,8 @@ namespace Tavisca.Tripster.Web
                             .AddMvcOptions(o => o.OutputFormatters.Add(
                         new XmlDataContractSerializerOutputFormatter()
                         ));
+
+            
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -70,6 +72,7 @@ namespace Tavisca.Tripster.Web
             app.UseCors("AllowAll");
             app.UseMiddleware<LoggingMiddleware>();
             app.UseMvc();
+         
         }
     }
 }
