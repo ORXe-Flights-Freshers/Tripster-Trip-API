@@ -1,77 +1,80 @@
 pipeline {
     agent any
-    parameters {
-        choice(
-            choices: ['BUILD' , 'DEPLOY'],
-            description: '',
-            name: 'REQUESTED_ACTION')
-        string(
-              name: 'GIT_URL',
-              defaultValue: 'https://github.com/tavisca-mgandhe/WebAPIs.git',
-              description: 'repository path')
-        string(
-               name: 'WEB_API_SOLUTION_FILE',
-               defaultValue: 'WebAPIs.sln',
-               description: 'solution path')
-        string(
-             name: 'TEST_PROJECT_PATH',
-             defaultValue: 'WebApiTests/WebApiTests.csproj',
-             description: 'test path')
-        string(
-            name: 'DOCKER_USERNAME', 
-            defaultValue: 'mayankgandhe',
-             description: 'docker username')
-        string(
-            name: 'DOCKER_PASSWORD',
-            defaultValue:'',
-            description: 'docker password')
-        string(
-            name: 'DOCKER_REPO_NAME',
-            defaultValue:'mayankgandhe/webapi',
-            description: 'docker repository')
-        string(
-            name: 'IMAGE_VERSION',
-            defaultValue:'latest',
-            description: 'docker image version')
-        string(
-            name: 'SOLUTION_NAME', 
-            defaultValue: 'WebApi',
-            description: 'solution name')
+	parameters {		
+			string(name: 'DOCKER_IMAGE_FILE',
+			       defaultValue: 'tripapi',
+				   description: 'This will be the name of Docker image generated. This should be in lowercase')
+		    string(name: 'DOCKER_CONTAINER_NAME',
+			       defaultValue: 'tripapi-container',
+				   description: 'This is the named docker container. <Docker_image_name>-container or <Project_name>-container is the suggested naming convention for this parameter')
+			string(name: 'USERNAME',
+			       defaultValue: 'yatharthsant',
+				   description: 'Enter your docker hub username here')
+			string(name: 'DOCKER_REPOSITORY',
+			       defaultValue: 'tripster',
+				   description: 'This is the docker repository where docker image (artifact) will be posted. If the specified name does not exist, a new repository with the specified name gets generated')
+			string(name: 'APPLICATION_PORT',
+			       defaultValue: '5000',
+				   description: 'This is the port on which your application will listen')
+		    string(name: 'DOCKER_CONTAINER_PORT',
+			       defaultValue: '5000',
+				   description: 'This is the port on which the docker container listens')
+			string(name: 'APP_NAME',
+			       defaultValue: 'Tavisca.Tripster.Web'
+				   description: 'This is your project/application name')
+			string(name: 'DOCKER_HUB_CREDENTIALS_ID',
+			       defaultValue: 'docker-hub-credentials',
+				   description: 'This field is used to reference docker hub credentials')
+			string(name: 'TAG_NAME',
+			       defaultValue: 'latest',
+				   description: 'This field is used to associate a tag to the docker image')
     }
     stages {
         stage('Build') {
-            when {
-                expression { params.REQUESTED_ACTION == 'BUILD' || params.REQUESTED_ACTION == 'DEPLOY' }
-            }
             steps {
-                
-              
-                 bat "  dotnet build ${WEB_API_SOLUTION_FILE} -p:Configuration=release -v:n"
-               
-                 bat " dotnet test ${TEST_PROJECT_PATH}"
-               
-                 bat " dotnet publish ${WEB_API_SOLUTION_FILE} -c Release -o ../publish"
-                
-                 powershell " compress-archive WebApis/bin/Release/netcoreapp2.2/publish/ artifact.zip -Update"
-                
-                 bat "docker build -t %DOCKER_REPO_NAME%:%IMAGE_VERSION% --build-arg project_name=%SOLUTION_NAME%.dll ."
-                
-            }
-        }
-         stage('Deploy') {
-             when {
-                expression { params.REQUESTED_ACTION == 'DEPLOY' }
-            }
-            steps {
-                
-                echo "----------------------------Deploy-----------------------------"
-                bat "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-               bat" docker push ${DOCKER_REPO_NAME}:${IMAGE_VERSION}"
-                            deleteDir()
+				sh 'dotnet restore'
+                sh 'dotnet build -p:Configuration=release -v:n'
 
             }
         }
-        
+        stage('Test') {
+            steps {
+                sh 'dotnet test' 
+            }
+        }
+		stage('Publish') {
+            steps {
+                sh 'dotnet publish ${APP_NAME} -c Release -o ../publish' 
+				sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
+				sh 'docker tag ${DOCKER_IMAGE_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+				sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
+				script{
+				  docker.withRegistry('https://www.docker.io/',"${DOCKER_HUB_CREDENTIALS_ID}"){
+				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+				  }
+				}
+				sh 'docker image rm -f ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+            }
+        }
+		stage('Deploy'){
+		     steps{
+			    sh '''
+				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
+				then
+					docker container rm -f ${DOCKER_CONTAINER_NAME}
+				fi
+			    '''
+				sh 'docker pull ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+			 }
+		}
+		
     }
-}
 
+	post{
+		always{
+			cleanWs()
+		}
+	}
+	
+}

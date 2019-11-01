@@ -1,10 +1,7 @@
-# get image of asp dotnet core docker image 
-FROM mcr.microsoft.com/dotnet/core/aspnet
-# Argument Required during docker build command
-ARG project_name
-# make app as working directory
-WORKDIR /app
-# copy Artifacts to working directory
-COPY /publish/. /app
-EXPOSE 5000
-CMD ["sh","-c","dotnet ${project_name}"]
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
+WORKDIR app
+COPY publish .
+ARG APPLICATION
+ENV HOSTED_APP = ${APPLICATION}
+ENTRYPOINT dotnet "${HOSTED_APP}.dll"
