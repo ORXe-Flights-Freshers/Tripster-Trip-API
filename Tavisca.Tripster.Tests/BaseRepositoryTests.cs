@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using Tavisca.Tripster.Contracts.Repository;
 using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.Data.Utility;
 using Xunit;
 
 namespace Tavisca.Tripster.Tests
