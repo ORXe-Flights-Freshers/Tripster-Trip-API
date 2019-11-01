@@ -19,9 +19,8 @@ namespace Tavisca.Tripster.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            env.ConfigureNLog("nlog.config");
             Configuration = configuration;
         }
 
@@ -57,10 +56,9 @@ namespace Tavisca.Tripster.Web
             
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
+          
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -70,7 +68,6 @@ namespace Tavisca.Tripster.Web
                 app.UseHsts();
             }
             app.UseCors("AllowAll");
-            app.UseMiddleware<LoggingMiddleware>();
             app.UseMvc();
          
         }
