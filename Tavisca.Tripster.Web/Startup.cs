@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NLog.Extensions.Logging;
-using NLog.Web;
 using Tavisca.Tripster.Contracts.DatabaseSettings;
 using Tavisca.Tripster.Contracts.Service;
 using Tavisca.Tripster.Core.Service;
-using Tavisca.Tripster.Data.Utility;
 using Tavisca.Tripster.MongoDB.UnitOfWork;
 
 namespace Tavisca.Tripster.Web
