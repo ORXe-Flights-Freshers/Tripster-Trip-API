@@ -20,7 +20,7 @@ pipeline {
 			       defaultValue: '5000',
 				   description: 'This is the port on which the docker container listens')
 			string(name: 'APP_NAME',
-			       defaultValue: 'Tavisca.Tripster.Web'
+			       defaultValue: 'Tavisca.Tripster.Web',
 				   description: 'This is your project/application name')
 			string(name: 'DOCKER_HUB_CREDENTIALS_ID',
 			       defaultValue: 'docker-hub-credentials',
