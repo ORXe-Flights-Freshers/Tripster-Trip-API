@@ -47,7 +47,6 @@ namespace Tavisca.Tripster.Web
                             .AddMvcOptions(o => o.OutputFormatters.Add(
                         new XmlDataContractSerializerOutputFormatter()
                         ));
-
             
         }
         

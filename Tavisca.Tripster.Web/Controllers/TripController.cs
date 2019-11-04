@@ -27,7 +27,9 @@ namespace Tavisca.Tripster.Web.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            return Ok(_tripService.Get(id));
+            var transferObject = _tripService.Get(id);
+            if (transferObject.ModelObject != null) return Ok(transferObject.ModelObject);
+            return NotFound(transferObject.ErrorMessage);
         }
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, [FromBody] Trip trip)
