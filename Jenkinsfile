@@ -65,7 +65,7 @@ pipeline {
 				fi
 			    '''
 				sh 'docker pull ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME}  -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
 			 }
 		}
 		

@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
 WORKDIR app
 COPY publish .
-ARG APPLICATION
-ENV HOSTED_APP = ${APPLICATION}
+# ARG APPLICATION
+# ENV HOSTED_APP = ${APPLICATION}
 EXPOSE 5000
-ENTRYPOINT dotnet "${HOSTED_APP}.dll"
+ENTRYPOINT dotnet "Tavisca.Tripster.Web.dll"
