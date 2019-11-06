@@ -29,8 +29,8 @@ namespace Tavisca.Tripster.Web
             services.AddSingleton<TripDatabaseSettings>();
             services.AddSingleton<TripDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
-            services.AddSingleton<TripUnitOfWork>();
-            services.AddSingleton<ITripService, TripService>();
+            services.AddScoped<TripUnitOfWork>();
+            services.AddScoped<ITripService, TripService>();
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",

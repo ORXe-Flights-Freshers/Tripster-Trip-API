@@ -48,7 +48,7 @@ namespace Tavisca.Tripster.Web.Controllers
         public IActionResult Delete(Guid id)
         {
             _tripService.Delete(id);
-            return Ok("Success");
+            return Ok("success");
         }
     }
 }
