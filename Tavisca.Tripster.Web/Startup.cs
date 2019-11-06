@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Tavisca.Tripster.Contracts.DatabaseSettings;
-using Tavisca.Tripster.Contracts.Service;
-using Tavisca.Tripster.Core.Service;
-using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Tavisca.Tripster.Contracts;
+using Tavisca.Tripster.Core;
+using Tavisca.Tripster.Dal;
+
 
 namespace Tavisca.Tripster.Web
 {

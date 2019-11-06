@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tavisca.Tripster.Contracts.DatabaseSettings
+namespace Tavisca.Tripster.Contracts
 {
     public class TripDatabaseSettings
     {

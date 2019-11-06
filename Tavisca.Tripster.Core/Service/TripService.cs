@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Tavisca.Tripster.Contracts.Service;
-using Tavisca.Tripster.Core.Validation;
-using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Tavisca.Tripster.Contracts;
+using Tavisca.Tripster.Dal;
 
-namespace Tavisca.Tripster.Core.Service
+namespace Tavisca.Tripster.Core
 {
     public class TripService : ITripService
     {
-        private TripUnitOfWork _tripUnitOfWork;
+        private TripUnitOfWork _tripUnitOfWork; //should be interface
         private Validator<Trip> _validator;
-        public TripService(TripUnitOfWork tripUnitOfWork)
+        public TripService(TripUnitOfWork tripUnitOfWork) //dependency injection
         {
             _validator = new Validator<Trip>();
             _tripUnitOfWork = tripUnitOfWork;

@@ -1,10 +1,9 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Tavisca.Tripster.Contracts.Repository;
+using Tavisca.Tripster.Contracts;
 
-namespace Tavisca.Tripster.MongoDB.Repository
+namespace Tavisca.Tripster.Dal
 {
     public class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {

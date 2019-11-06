@@ -3,8 +3,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Tavisca.Tripster.Contracts.Repository;
-using Tavisca.Tripster.Data.Models;
+using Tavisca.Tripster.Contracts;
 using Xunit;
 
 namespace Tavisca.Tripster.Tests

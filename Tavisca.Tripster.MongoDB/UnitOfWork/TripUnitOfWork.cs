@@ -1,12 +1,9 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Tavisca.Tripster.Contracts.DatabaseSettings;
-using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.Repository;
+using Tavisca.Tripster.Contracts;
 
-namespace Tavisca.Tripster.MongoDB.UnitOfWork
+namespace Tavisca.Tripster.Dal
 {
     public class TripUnitOfWork
     {

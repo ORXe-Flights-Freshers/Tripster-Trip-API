@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tavisca.Tripster.Contracts;
 
-namespace Tavisca.Tripster.Core.Validation
+namespace Tavisca.Tripster.Core
 {
     public class Validator<TEntity> where TEntity : class
     {

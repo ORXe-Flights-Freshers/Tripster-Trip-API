@@ -4,11 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Contracts.Service;
-using Tavisca.Tripster.Data.Models;
+using Tavisca.Tripster.Contracts;
 
-namespace Tavisca.Tripster.Web.Controllers
-{
+namespace Tavisca.Tripster.Web { 
     [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     public class TripController : Controller
@@ -22,11 +20,33 @@ namespace Tavisca.Tripster.Web.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_tripService.GetAll());
+            if (_tripService != null)
+            {
+                if (_tripService.GetAll() != null )
+                    return Ok(_tripService.GetAll());
+                else
+                    return NotFound();
+            }
+
+            return StatusCode(ErrorCode.InternalServerError, ErrorMessages.InternalServerError);
+
+            // return Ok(_tripService.GetAll());
         }
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
+
+            if (_tripService != null)
+            {
+
+            }
+             return StatusCode(ErrorCode.InternalServerError, ErrorMessages.InternalServerError);
+
+
+
+
+
+
             var transferObject = _tripService.Get(id);
             if (transferObject.ModelObject != null) return Ok(transferObject.ModelObject);
             return NotFound(transferObject.ErrorMessage);
