@@ -40,10 +40,11 @@ namespace Tavisca.Tripster.MongoDB.Repository
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
             _collection.FindOneAndDelete(requiredId);
         }
-        public void Update(Guid id, TEntity entity)
+        public TEntity Update(Guid id, TEntity entity)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
             _collection.FindOneAndReplace(requiredId, entity);
+            return _collection.Find(requiredId).FirstOrDefault();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Tavisca.Tripster.Contracts.Repository
         IEnumerable<TEntity> GetAll();
         void Add(TEntity entity);
         void Delete(Guid id);
-        void Update(Guid id, TEntity entity);
+        TEntity Update(Guid id, TEntity entity);
         
     }
 
