@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Service;
 using Tavisca.Tripster.Core.Validation;
 using Tavisca.Tripster.Data.Models;
@@ -18,33 +19,33 @@ namespace Tavisca.Tripster.Core.Service
             _validator = new Validator<Trip>();
             _tripUnitOfWork = tripUnitOfWork;
         }
-        public void Add(Trip trip)
+        public async Task Add(Trip trip)
         {
-            _tripUnitOfWork.Trips.Add(trip);
+            await Task.Run(() => _tripUnitOfWork.Trips.Add(trip));
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            _tripUnitOfWork.Trips.Delete(id);
+            await Task.Run(() => _tripUnitOfWork.Trips.Delete(id));
         }
 
-        public TransferObject<Trip> Get(Guid id)
+        public async Task<TransferObject<Trip>> Get(Guid id)
         {
             var trip = _tripUnitOfWork.Trips.Get(id);
             _validator.Entity = trip;
             _validator.ID = id;
             var transferObject = _validator.GetTransferObject();
-            return transferObject;
+            return await Task.Run(() => transferObject);
         }
 
-        public IEnumerable<Trip> GetAll()
+        public async Task<IEnumerable<Trip>> GetAll()
         {
-            return _tripUnitOfWork.Trips.GetAll();
+            return await Task.Run(() => _tripUnitOfWork.Trips.GetAll());
         }
 
-        public void Update(Guid id, Trip trip)
+        public async Task<Trip> Update(Guid id, Trip trip)
         {
-            _tripUnitOfWork.Trips.Update(id, trip);
+            return await Task.Run(() => _tripUnitOfWork.Trips.Update(id, trip));
         }
     }
 }
