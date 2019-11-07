@@ -9,18 +9,26 @@ namespace Tavisca.Tripster.Dal
     {
         private IMongoDatabase _database;
         private MongoRepository<Trip> _trips;
-
-        public TripUnitOfWork(TripDatabaseSettings databaseSettings)
+        public TripUnitOfWork(DatabaseConnection databaseConnection)
         {
-            var client = new MongoClient(databaseSettings.ConnectionString);
-            _database = client.GetDatabase(databaseSettings.DatabaseName);
+            _database = databaseConnection.GetDatabase();
         }
 
-        public MongoRepository<Trip> Trips
+
+        public bool ValidateConnection()
         {
+                if (_database == null) return false;
+                return true;
+        }
+
+
+
+        public MongoRepository<Trip> Trips
+        {  
             get
             {
-                if (_trips == null) _trips = new MongoRepository<Trip>(_database);
+                if (_trips == null) 
+                _trips = new MongoRepository<Trip>(_database);
                 return _trips;
             }
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -30,7 +31,10 @@ namespace Tavisca.Tripster.Web
             services.AddSingleton<TripDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
             services.AddSingleton<TripUnitOfWork>();
+            services.AddSingleton<DatabaseConnection>();
             services.AddSingleton<ITripService, TripService>();
+           services.AddSingleton<IValidator<Trip>, RequestValidator>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",

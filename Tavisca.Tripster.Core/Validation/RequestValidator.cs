@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using Tavisca.Tripster.Contracts;
 
-namespace Tavisca.Tripster.Core.Validation
+namespace Tavisca.Tripster.Core
 {
-    class RequestValidator:AbstractValidator<Trip>
+    public class RequestValidator:AbstractValidator<Trip>
     {
         public RequestValidator()
         {
@@ -17,12 +17,9 @@ namespace Tavisca.Tripster.Core.Validation
             RuleFor(x => x.Destination).NotNull().WithMessage("{PropertyName} is Mandatory");
           
         }
-
+       
         // to validate Guid
-         private bool ValidateGuid(string id)
-        {
-            return Guid.TryParse(id, out var result);
-        }
+
 
     }
 }

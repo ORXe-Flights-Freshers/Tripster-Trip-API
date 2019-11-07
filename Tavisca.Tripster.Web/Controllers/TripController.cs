@@ -47,9 +47,9 @@ namespace Tavisca.Tripster.Web {
 
 
 
-            var transferObject = _tripService.Get(id);
-            if (transferObject.ModelObject != null) return Ok(transferObject.ModelObject);
-            return NotFound(transferObject.ErrorMessage);
+            //var transferObject = _tripService.Get(id);
+            //if (transferObject.ModelObject != null) return Ok(transferObject.ModelObject);
+            //return NotFound(transferObject.ErrorMessage);
         }
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, [FromBody] Trip trip)
@@ -62,7 +62,7 @@ namespace Tavisca.Tripster.Web {
         public ActionResult<Trip> Post([FromBody] Trip trip)
         {
             _tripService.Add(trip);
-            return trip;
+            return Ok(trip);
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)

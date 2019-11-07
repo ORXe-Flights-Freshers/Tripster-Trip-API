@@ -20,8 +20,15 @@ namespace Tavisca.Tripster.Dal
         public TEntity Get(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            return _collection.Find(requiredId).FirstOrDefault();
-
+            var result= _collection.Find(requiredId).FirstOrDefault();
+            if(result == null)
+            {
+                throw new NotFoundException();
+            }
+            else
+            {
+                return result;
+            }
         }
 
         public IEnumerable<TEntity> GetAll()
@@ -34,15 +41,30 @@ namespace Tavisca.Tripster.Dal
             _collection.InsertOne(entity);
         }
 
-        public void Delete(Guid id)
+        public void  Delete(Guid id)
         {
-            var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            _collection.FindOneAndDelete(requiredId);
+
+            
+                var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
+                 var result=_collection.FindOneAndDelete(requiredId);
+            if(result == null)
+            {
+                throw new NotFoundException();
+            }
+             //   return true;
+          
+           
         }
         public void Update(Guid id, TEntity entity)
         {
-            var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            _collection.FindOneAndReplace(requiredId, entity);
+            // this can wear out
+           
+                var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
+              var  result= _collection.FindOneAndReplace(requiredId, entity);
+            if (result == null)
+            {
+                throw new NotFoundException();
+            }
         }
     }
 }
