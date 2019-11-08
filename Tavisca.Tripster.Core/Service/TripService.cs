@@ -21,17 +21,17 @@ namespace Tavisca.Tripster.Core.Service
         }
         public async Task Add(Trip trip)
         {
-            await Task.Run(() => _tripUnitOfWork.Trips.Add(trip));
+            await _tripUnitOfWork.Add(trip);
         }
 
         public async Task Delete(Guid id)
         {
-            await Task.Run(() => _tripUnitOfWork.Trips.Delete(id));
+            await  _tripUnitOfWork.Delete(id);
         }
 
         public async Task<TransferObject<Trip>> Get(Guid id)
         {
-            var trip = _tripUnitOfWork.Trips.Get(id);
+            var trip = await _tripUnitOfWork.Get(id);
             _validator.Entity = trip;
             _validator.ID = id;
             var transferObject = _validator.GetTransferObject();
@@ -40,12 +40,12 @@ namespace Tavisca.Tripster.Core.Service
 
         public async Task<IEnumerable<Trip>> GetAll()
         {
-            return await Task.Run(() => _tripUnitOfWork.Trips.GetAll());
+            return await  _tripUnitOfWork.GetAll();
         }
 
-        public async Task<Trip> Update(Guid id, Trip trip)
+        public async Task Update(Guid id, Trip trip)
         {
-            return await Task.Run(() => _tripUnitOfWork.Trips.Update(id, trip));
+            await _tripUnitOfWork.Update(id, trip);
         }
     }
 }

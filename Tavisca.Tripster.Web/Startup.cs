@@ -6,8 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Tavisca.Tripster.Contracts.DatabaseSettings;
+using Tavisca.Tripster.Contracts.Repository;
 using Tavisca.Tripster.Contracts.Service;
 using Tavisca.Tripster.Core.Service;
+using Tavisca.Tripster.Data.Models;
+using Tavisca.Tripster.MongoDB.Repository;
 using Tavisca.Tripster.MongoDB.UnitOfWork;
 
 namespace Tavisca.Tripster.Web
@@ -31,6 +34,7 @@ namespace Tavisca.Tripster.Web
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
             services.AddScoped<TripUnitOfWork>();
             services.AddScoped<ITripService, TripService>();
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",

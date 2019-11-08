@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Repository;
 
 namespace Tavisca.Tripster.MongoDB.Repository
@@ -11,40 +12,39 @@ namespace Tavisca.Tripster.MongoDB.Repository
         private IMongoDatabase _database;
         private string _collectionName;
         private IMongoCollection<TEntity> _collection;
-
+        
         public MongoRepository(IMongoDatabase database)
         {
             _database = database;
             _collectionName = typeof(TEntity).Name;
             _collection = _database.GetCollection<TEntity>(_collectionName);
         }
-        public TEntity Get(Guid id)
+        public async Task<TEntity> Get(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            return _collection.Find(requiredId).FirstOrDefault();
+            return await Task.Run(() => _collection.FindAsync(requiredId).Result.FirstOrDefault());
 
         }
-
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return _collection.Find(entity => true).ToList();
+            return await Task.Run(() => _collection.FindAsync(entity => true).Result.ToList());
         }
 
-        public void Add(TEntity entity)
+        public async Task Add(TEntity entity)
         {
-            _collection.InsertOne(entity);
+             await Task.Run(() => _collection.InsertOne(entity));
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            _collection.FindOneAndDelete(requiredId);
+            await Task.Run(() => _collection.FindOneAndDelete(requiredId));
         }
-        public TEntity Update(Guid id, TEntity entity)
+        public async Task Update(Guid id, TEntity entity)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
             _collection.FindOneAndReplace(requiredId, entity);
-            return _collection.Find(requiredId).FirstOrDefault();
+            await Task.Run(() => _collection.FindAsync(requiredId).Result.FirstOrDefault());
         }
     }
 }
