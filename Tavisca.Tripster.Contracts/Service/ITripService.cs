@@ -9,7 +9,7 @@ namespace Tavisca.Tripster.Contracts.Service
 {
     public interface ITripService
     {
-        Task<TransferObject<Trip>> Get(Guid id);
+        Task<Response<Trip>> Get(Guid id);
         Task<IEnumerable<Trip>> GetAll();
         Task Add(Trip trip);
         Task Delete(Guid id);

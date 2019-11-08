@@ -29,13 +29,13 @@ namespace Tavisca.Tripster.Core.Service
             await  _tripUnitOfWork.Delete(id);
         }
 
-        public async Task<TransferObject<Trip>> Get(Guid id)
+        public async Task<Response<Trip>> Get(Guid id)
         {
             var trip = await _tripUnitOfWork.Get(id);
             _validator.Entity = trip;
             _validator.ID = id;
-            var transferObject = _validator.GetTransferObject();
-            return await Task.Run(() => transferObject);
+            var response = _validator.GetResponse();
+            return await Task.Run(() => response);
         }
 
         public async Task<IEnumerable<Trip>> GetAll()

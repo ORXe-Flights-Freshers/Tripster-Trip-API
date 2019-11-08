@@ -28,9 +28,9 @@ namespace Tavisca.Tripster.Web.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var transferObject = await Task.Run(() => _tripService.Get(id));
-            if (transferObject.ModelObject != null) return Ok(transferObject.ModelObject);
-            return NotFound(transferObject.ErrorMessage);
+            var responseObject = await Task.Run(() => _tripService.Get(id));
+            if (responseObject.Model != null) return Ok(responseObject.Model);
+            return NotFound(responseObject.ErrorMessage);
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Trip trip)
