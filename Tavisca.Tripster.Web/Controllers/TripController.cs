@@ -36,7 +36,7 @@ namespace Tavisca.Tripster.Web.Controllers
         public async Task<IActionResult> Put(Guid id, [FromBody] Trip trip)
         {
             await Task.Run(() => _tripService.Update(id, trip));
-            return Ok(trip);
+            return Ok("trip successfully updated");
         }
 
         [HttpPost]
