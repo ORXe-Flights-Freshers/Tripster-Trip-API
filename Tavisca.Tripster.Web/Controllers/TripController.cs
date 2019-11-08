@@ -38,18 +38,18 @@ namespace Tavisca.Tripster.Web.Controllers
             await Task.Run(() => _tripService.Update(id, trip));
             return Ok(trip);
         }
-        //[Route("createTrip")]
+
         [HttpPost]
-        public async Task<ActionResult<Trip>> Post([FromBody] Trip trip)
+        public async Task<IActionResult> Post([FromBody] Trip trip)
         {
             await Task.Run(() =>_tripService.Add(trip));
-            return trip;
+            return Ok(trip);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await Task.Run(() => _tripService.Delete(id));
-            return Ok("success");
+            return Ok("deleted successfully");
         }
     }
 }
