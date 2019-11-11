@@ -43,9 +43,10 @@ namespace Tavisca.Tripster.Core.Service
             return await  _tripUnitOfWork.GetAll();
         }
 
-        public async Task Update(Guid id, Trip trip)
+        public async Task<Trip> Update(Guid id, Trip trip)
         {
-            await _tripUnitOfWork.Update(id, trip);
+            var updatedTrip = await _tripUnitOfWork.Update(id, trip);
+            return updatedTrip;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Tavisca.Tripster.Contracts.Repository
         Task<IEnumerable<TEntity>> GetAll();
         Task Add(TEntity entity);
         Task Delete(Guid id);
-        Task Update(Guid id, TEntity entity);
+        Task<TEntity> Update(Guid id, TEntity entity);
         
     }
 

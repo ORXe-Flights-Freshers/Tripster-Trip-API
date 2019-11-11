@@ -13,6 +13,6 @@ namespace Tavisca.Tripster.Contracts.Service
         Task<IEnumerable<Trip>> GetAll();
         Task Add(Trip trip);
         Task Delete(Guid id);
-        Task Update(Guid id, Trip trip);
+        Task<Trip> Update(Guid id, Trip trip);
     }
 }

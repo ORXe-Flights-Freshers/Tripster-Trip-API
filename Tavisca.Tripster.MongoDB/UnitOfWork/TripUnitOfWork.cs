@@ -49,12 +49,13 @@ namespace Tavisca.Tripster.MongoDB.UnitOfWork
             _session.CommitTransaction();
         }
 
-        public async Task Update(Guid id, Trip trip)
+        public async Task<Trip> Update(Guid id, Trip trip)
         {
             _session = await _client.StartSessionAsync();
             _session.StartTransaction();
-            await _trips.Update(id, trip);
+            var updatedTrip = await _trips.Update(id, trip);
             _session.CommitTransaction();
+            return updatedTrip;
         }
         
     }

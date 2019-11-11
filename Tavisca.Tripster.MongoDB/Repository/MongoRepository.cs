@@ -38,13 +38,14 @@ namespace Tavisca.Tripster.MongoDB.Repository
         public async Task Delete(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
+
             await Task.Run(() => _collection.FindOneAndDelete(requiredId));
         }
-        public async Task Update(Guid id, TEntity entity)
+        public async Task<TEntity> Update(Guid id, TEntity entity)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            _collection.FindOneAndReplace(requiredId, entity);
-            await Task.Run(() => _collection.FindAsync(requiredId).Result.FirstOrDefault());
+            var updatedEntity = await _collection.FindOneAndReplaceAsync(requiredId, entity);
+            return updatedEntity;
         }
     }
 }
