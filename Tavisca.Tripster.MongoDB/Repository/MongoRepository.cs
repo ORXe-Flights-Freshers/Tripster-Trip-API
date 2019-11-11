@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Tavisca.Tripster.Contracts.Repository;
+using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.MongoDB.Repository
 {
@@ -24,6 +25,12 @@ namespace Tavisca.Tripster.MongoDB.Repository
             return _collection.Find(requiredId).FirstOrDefault();
 
         }
+        public TEntity Get(string email)
+        {
+            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
+            return _collection.Find(requiredId).FirstOrDefault();
+
+        }
 
         public IEnumerable<TEntity> GetAll()
         {
@@ -33,17 +40,38 @@ namespace Tavisca.Tripster.MongoDB.Repository
         public void Add(TEntity entity)
         {
             _collection.InsertOne(entity);
+
         }
+        
+      
 
         public void Delete(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
             _collection.FindOneAndDelete(requiredId);
         }
+        public void Delete(string email)
+        {
+            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
+            _collection.FindOneAndDelete(requiredId);
+        }
         public void Update(Guid id, TEntity entity)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
             _collection.FindOneAndReplace(requiredId, entity);
+        }
+        public void Update(string email, TEntity entity)
+        {
+            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
+
+            _collection.FindOneAndReplace(requiredId, entity);
+        }
+        public void UpdateUser(string email, TEntity entity)
+        {
+            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
+            _collection.FindOneAndDelete(requiredId);
+            _collection.InsertOne(entity);
+             
         }
     }
 }

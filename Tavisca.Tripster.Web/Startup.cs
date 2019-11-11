@@ -9,6 +9,8 @@ using Tavisca.Tripster.Contracts.DatabaseSettings;
 using Tavisca.Tripster.Contracts.Service;
 using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
+using Tavisca.Tripster.Web.Models;
 
 namespace Tavisca.Tripster.Web
 {
@@ -30,7 +32,9 @@ namespace Tavisca.Tripster.Web
             services.AddSingleton<TripDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
             services.AddSingleton<TripUnitOfWork>();
+            services.AddSingleton<UserUnitOfWork>();
             services.AddSingleton<ITripService, TripService>();
+            services.AddSingleton<IUserService, UserService>();
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -47,6 +51,9 @@ namespace Tavisca.Tripster.Web
                             .AddMvcOptions(o => o.OutputFormatters.Add(
                         new XmlDataContractSerializerOutputFormatter()
                         ));
+
+            services.AddDbContext<TaviscaTripsterWebContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("TaviscaTripsterWebContext")));
             
         }
         

@@ -5,4 +5,4 @@
         public string ErrorMessage { get; set; } = null;
         public TEntity ModelObject { get; set; } = null;
     }
-}
+} 
