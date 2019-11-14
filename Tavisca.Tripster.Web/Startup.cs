@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 using Tavisca.Tripster.Contracts.DatabaseSettings;
 using Tavisca.Tripster.Contracts.Repository;
 using Tavisca.Tripster.Contracts.Service;
@@ -12,14 +14,27 @@ using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.Data.Models;
 using Tavisca.Tripster.MongoDB.Repository;
 using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Tavisca.Tripster.Web.Middleware;
 
 namespace Tavisca.Tripster.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
+
+            Log.Information("Starting up");
         }
 
         public IConfiguration Configuration { get; }
@@ -54,9 +69,10 @@ namespace Tavisca.Tripster.Web
             
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-          
+
+            loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,6 +81,7 @@ namespace Tavisca.Tripster.Web
             {
                 app.UseHsts();
             }
+            app.UseMiddleware<SerilogMiddleware>();
             app.UseCors("AllowAll");
             app.UseMvc();
          

@@ -13,7 +13,6 @@ namespace Tavisca.Tripster.Contracts.Repository
         Task Add(TEntity entity);
         Task Delete(Guid id);
         Task<TEntity> Update(Guid id, TEntity entity);
-        
     }
 
 }

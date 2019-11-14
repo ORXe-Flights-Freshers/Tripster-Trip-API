@@ -25,13 +25,16 @@ namespace Tavisca.Tripster.Web.Controllers
             var tripList = await Task.Run(() => _tripService.GetAll());
             return tripList;
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             var responseObject = await Task.Run(() => _tripService.Get(id));
-            if (responseObject.Model != null) return Ok(responseObject.Model);
+            if (responseObject.Model != null)
+                return Ok(responseObject.Model);
             return NotFound(responseObject.ErrorMessage);
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Trip trip)
         {
@@ -45,9 +48,10 @@ namespace Tavisca.Tripster.Web.Controllers
             await Task.Run(() =>_tripService.Add(trip));
             return Ok(trip);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
-        {
+        {   
             await Task.Run(() => _tripService.Delete(id));
             return Ok("deleted successfully");
         }
