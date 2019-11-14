@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Service;
 using Tavisca.Tripster.Core.Validation;
 using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Tavisca.Tripster.MongoDB.Repository;
 
 namespace Tavisca.Tripster.Core.Service
 {
     public class TripService : ITripService
     {
-        private TripUnitOfWork _tripUnitOfWork;
+        private TripRepository _tripUnitOfWork;
         private Validator<Trip> _validator;
-        public TripService(TripUnitOfWork tripUnitOfWork)
+        public TripService(TripRepository tripUnitOfWork)
         {
             _validator = new Validator<Trip>();
             _tripUnitOfWork = tripUnitOfWork;
         }
+
         public async Task Add(Trip trip)
         {
             await _tripUnitOfWork.Add(trip);

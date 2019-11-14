@@ -19,6 +19,7 @@ namespace Tavisca.Tripster.Web.Controllers
         {
             _tripService = tripService;
         }
+
         [HttpGet]
         public async Task<IEnumerable<Trip>> Get()
         {

@@ -1,22 +1,20 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Contracts.DatabaseSettings;
+using Tavisca.Tripster.Contracts.Configuration;
 using Tavisca.Tripster.Contracts.Repository;
 using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.Repository;
 
-namespace Tavisca.Tripster.MongoDB.UnitOfWork
+namespace Tavisca.Tripster.MongoDB.Repository
 {
-    public class TripUnitOfWork
+    public class TripRepository
     {
         private IMongoDatabase _database;
         private IRepository<Trip> _trips;
         private MongoClient _client;
         private IClientSessionHandle _session;
-        public TripUnitOfWork(TripDatabaseSettings databaseSettings)
+        public TripRepository(DatabaseSettings databaseSettings)
         {
             _client = new MongoClient(databaseSettings.ConnectionString);
             _database = _client.GetDatabase(databaseSettings.DatabaseName);

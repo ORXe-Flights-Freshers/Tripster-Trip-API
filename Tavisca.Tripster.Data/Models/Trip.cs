@@ -2,8 +2,6 @@
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tavisca.Tripster.Data.Models
 {

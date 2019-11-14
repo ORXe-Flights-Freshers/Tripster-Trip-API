@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tavisca.Tripster.Contracts.DatabaseSettings
+﻿namespace Tavisca.Tripster.Contracts.Configuration
 {
-    public class TripDatabaseSettings
+    public class DatabaseSettings
     {
         public string CollectionName { get; set; }
         public string ConnectionString { get; set; }
