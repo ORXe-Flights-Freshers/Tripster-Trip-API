@@ -7,8 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
-using Tavisca.Tripster.Contracts.Configuration;
-using Tavisca.Tripster.Contracts.Service;
+using Tavisca.Tripster.Contracts.Entity;
+using Tavisca.Tripster.Contracts.Interface;
+using Tavisca.Tripster.Contracts.Response;
 using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.MongoDB.Repository;
 using Tavisca.Tripster.Web.Middleware;
@@ -49,6 +50,10 @@ namespace Tavisca.Tripster.Web
             services.AddScoped<TripRepository>();
 
             services.AddScoped<ITripService, TripService>();
+
+            services.AddScoped<EmailRepository>();
+
+            services.AddScoped<TripResponse>();
             
             services.AddCors(options =>
             {

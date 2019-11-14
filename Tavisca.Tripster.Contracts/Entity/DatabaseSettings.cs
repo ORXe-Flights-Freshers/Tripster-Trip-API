@@ -1,4 +1,4 @@
-﻿namespace Tavisca.Tripster.Contracts.Configuration
+﻿namespace Tavisca.Tripster.Contracts.Entity
 {
     public class DatabaseSettings
     {

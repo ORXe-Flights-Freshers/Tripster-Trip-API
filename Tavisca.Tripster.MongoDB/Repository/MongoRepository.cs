@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Contracts.Repository;
+using Tavisca.Tripster.Contracts.Interface;
 
 namespace Tavisca.Tripster.MongoDB.Repository
 {

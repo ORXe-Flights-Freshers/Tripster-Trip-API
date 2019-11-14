@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Data.Models;
 
-namespace Tavisca.Tripster.Contracts.Repository
+namespace Tavisca.Tripster.Contracts.Interface
 {
     public interface IRepository<TEntity> where TEntity : class
     {

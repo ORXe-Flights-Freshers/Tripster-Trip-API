@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Contracts.Service;
+using Tavisca.Tripster.Contracts.Interface;
 using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.Web.Controllers
@@ -15,46 +14,47 @@ namespace Tavisca.Tripster.Web.Controllers
     {
         private readonly ITripService _tripService;
 
+
         public TripController(ITripService tripService)
         {
             _tripService = tripService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Trip>> Get()
+        public async Task<IEnumerable<Trip>> GetAllTrips()
         {
-            var tripList = await Task.Run(() => _tripService.GetAll());
+            var tripList = await _tripService.GetAll();
             return tripList;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetTripById(Guid id)
         {
-            var responseObject = await Task.Run(() => _tripService.Get(id));
-            if (responseObject.Model != null)
-                return Ok(responseObject.Model);
-            return NotFound(responseObject.ErrorMessage);
+            var tripResponse = await _tripService.Get(id);
+            if (tripResponse.IsSuccess == true)
+                return Ok(tripResponse.Trip);
+            return NotFound(tripResponse.Message);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] Trip trip)
+        public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
-            await Task.Run(() => _tripService.Update(id, trip));
-            return Ok(trip);
+            var updatedTrip = await _tripService.Update(id, trip);
+            return Ok(updatedTrip);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Trip trip)
+        public async Task<IActionResult> CreateTrip([FromBody] Trip trip)
         {
-            await Task.Run(() =>_tripService.Add(trip));
+            await _tripService.Add(trip);
             return Ok(trip);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {   
-            await Task.Run(() => _tripService.Delete(id));
-            return Ok("deleted successfully");
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(Guid id)
+        //{   
+        //    await _tripService.Delete(id);
+        //    return Ok("deleted successfully");
+        //}
     }
 }
