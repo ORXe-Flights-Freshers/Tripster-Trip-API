@@ -7,7 +7,7 @@ using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.MongoDB.Repository
 {
-    public class EmailRepository : GenericRepository<Email>
+    public class EmailRepository : MongoRepository<Email>
     {
         public async Task<Email> GetEmailById(string id)
         {

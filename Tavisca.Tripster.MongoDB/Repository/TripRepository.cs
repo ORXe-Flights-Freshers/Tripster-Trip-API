@@ -1,14 +1,11 @@
 ﻿using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Contracts.Entity;
-using Tavisca.Tripster.Contracts.Interface;
 using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.MongoDB.Repository
 {
-    public class TripRepository : GenericRepository<Trip>
+    public class TripRepository : MongoRepository<Trip>
     {
         public async Task<Trip> GetTripById(Guid id)
         {

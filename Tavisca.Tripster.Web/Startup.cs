@@ -41,12 +41,12 @@ namespace Tavisca.Tripster.Web
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.Configure<DatabaseSettings>(
-        Configuration.GetSection(nameof(DatabaseSettings)));
+        //    services.Configure<DatabaseSettings>(
+        //Configuration.GetSection(nameof(DatabaseSettings)));
 
-            services.AddSingleton<DatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-
+        //    services.AddSingleton<DatabaseSettings>(sp =>
+        //        sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            
             services.AddScoped<TripRepository>();
 
             services.AddScoped<ITripService, TripService>();

@@ -39,5 +39,11 @@ namespace Tavisca.Tripster.Web.Controllers
             var updatedEmail = await _emailRepository.UpdateEmail(id, email);
             return Ok(updatedEmail);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateTrip([FromBody] Email email)
+        {
+            await _emailRepository.Create(email);
+            return Ok(email);
+        }
     }
 }
