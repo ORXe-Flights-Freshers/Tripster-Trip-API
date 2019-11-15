@@ -18,7 +18,7 @@ namespace Tavisca.Tripster.Core.Service
             _tripRepository = tripRepository;
         }
 
-        public async Task Add(Trip trip)
+        public async Task CreateTrip(Trip trip)
         {
             await _tripRepository.Create(trip);
         }
@@ -28,7 +28,7 @@ namespace Tavisca.Tripster.Core.Service
         //    await _tripRepository.
         //}
 
-        public async Task<TripResponse> Get(Guid id)
+        public async Task<TripResponse> GetTripById(Guid id)
         {
             var trip = await _tripRepository.GetTripById(id);
             if(trip == null)
@@ -45,12 +45,12 @@ namespace Tavisca.Tripster.Core.Service
             return _tripResponse;
         }
 
-        public async Task<IEnumerable<Trip>> GetAll()
+        public async Task<IEnumerable<Trip>> GetAllTrips()
         {
             return await _tripRepository.GetAll();
         }
 
-        public async Task<Trip> Update(Guid id, Trip trip)
+        public async Task<Trip> UpdateTrip(Guid id, Trip trip)
         {
             var updatedTrip = await _tripRepository.UpdateTrip(id, trip);
             return updatedTrip;

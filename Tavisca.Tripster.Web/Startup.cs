@@ -10,6 +10,7 @@ using Serilog;
 using Tavisca.Tripster.Contracts.Entity;
 using Tavisca.Tripster.Contracts.Interface;
 using Tavisca.Tripster.Contracts.Response;
+using Tavisca.Tripster.Core.Provider;
 using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.MongoDB.Repository;
 using Tavisca.Tripster.Web.Middleware;
@@ -41,17 +42,23 @@ namespace Tavisca.Tripster.Web
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-        //    services.Configure<DatabaseSettings>(
-        //Configuration.GetSection(nameof(DatabaseSettings)));
+            services.AddTransient<ISmtpClientBuilder, SmtpClientBuilder>();
 
-        //    services.AddSingleton<DatabaseSettings>(sp =>
-        //        sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            
+            services.AddSingleton<EmailResponse>();
+
+            services.Configure<SendCredentials>(
+                       Configuration.GetSection(nameof(SendCredentials)));
+
+            services.AddSingleton<SendCredentials>(sp =>
+                     sp.GetRequiredService<IOptions<SendCredentials>>().Value);
+            services.AddTransient<IMailBuilder, MailBuilder>();
+
+            services.AddScoped<SendEmailService>();
+
+
             services.AddScoped<TripRepository>();
 
             services.AddScoped<ITripService, TripService>();
-
-            services.AddScoped<EmailRepository>();
 
             services.AddScoped<TripResponse>();
             

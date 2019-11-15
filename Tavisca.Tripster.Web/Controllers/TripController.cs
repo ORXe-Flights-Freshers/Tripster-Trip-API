@@ -23,14 +23,14 @@ namespace Tavisca.Tripster.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<Trip>> GetAllTrips()
         {
-            var tripList = await _tripService.GetAll();
+            var tripList = await _tripService.GetAllTrips();
             return tripList;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTripById(Guid id)
         {
-            var tripResponse = await _tripService.Get(id);
+            var tripResponse = await _tripService.GetTripById(id);
             if (tripResponse.IsSuccess == true)
                 return Ok(tripResponse.Trip);
             return NotFound(tripResponse.Message);
@@ -39,14 +39,14 @@ namespace Tavisca.Tripster.Web.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
-            var updatedTrip = await _tripService.Update(id, trip);
+            var updatedTrip = await _tripService.UpdateTrip(id, trip);
             return Ok(updatedTrip);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTrip([FromBody] Trip trip)
         {
-            await _tripService.Add(trip);
+            await _tripService.CreateTrip(trip);
             return Ok(trip);
         }
 
