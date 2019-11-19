@@ -1,10 +1,9 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Repository;
-using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.MongoDB.Repository
 {
@@ -13,64 +12,40 @@ namespace Tavisca.Tripster.MongoDB.Repository
         private IMongoDatabase _database;
         private string _collectionName;
         private IMongoCollection<TEntity> _collection;
-
+        
         public MongoRepository(IMongoDatabase database)
         {
             _database = database;
             _collectionName = typeof(TEntity).Name;
             _collection = _database.GetCollection<TEntity>(_collectionName);
         }
-        public TEntity Get(Guid id)
+        public async Task<TEntity> Get(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            return _collection.Find(requiredId).FirstOrDefault();
+            return await Task.Run(() => _collection.FindAsync(requiredId).Result.FirstOrDefault());
 
         }
-        public TEntity Get(string email)
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
-            return _collection.Find(requiredId).FirstOrDefault();
-
+            return await Task.Run(() => _collection.FindAsync(entity => true).Result.ToList());
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task Add(TEntity entity)
         {
-            return _collection.Find(entity => true).ToList();
+             await Task.Run(() => _collection.InsertOne(entity));
         }
 
-        public void Add(TEntity entity)
-        {
-            _collection.InsertOne(entity);
-
-        }
-        
-      
-
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            _collection.FindOneAndDelete(requiredId);
+
+            await Task.Run(() => _collection.FindOneAndDelete(requiredId));
         }
-        public void Delete(string email)
-        {
-            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
-            _collection.FindOneAndDelete(requiredId);
-        }
-        public void Update(Guid id, TEntity entity)
+        public async Task<TEntity> Update(Guid id, TEntity entity)
         {
             var requiredId = Builders<TEntity>.Filter.Eq("_id", id);
-            _collection.FindOneAndReplace(requiredId, entity);
-        }
-        public void Update(string email, TEntity entity)
-        {
-            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
-
-            _collection.FindOneAndReplace(requiredId, entity);
-        }
-        public void UpdateUser(string email, TEntity entity)
-        {
-            if(_collection.CountDocuments(filter: new BsonDocument("_id", email)) == 0)
-            _collection.InsertOne(entity);
+            var updatedEntity = await _collection.FindOneAndReplaceAsync(requiredId, entity);
+            return updatedEntity;
         }
     }
 }

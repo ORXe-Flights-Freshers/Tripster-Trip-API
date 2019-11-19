@@ -20,8 +20,8 @@
     "Tavisca.Tripster.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/user",
-      "applicationUrl": "http://localhost:5000",
+      "launchUrl": "api/trip",
+      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

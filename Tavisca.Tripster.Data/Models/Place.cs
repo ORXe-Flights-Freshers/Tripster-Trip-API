@@ -14,5 +14,7 @@ namespace Tavisca.Tripster.Data.Models
         public string PlaceType { get; set; }
         public string Arrival { get; set; }
         public string Departure { get; set; }
+        public string ImageUrl { get; set; }
+
     }
 }

@@ -4,21 +4,37 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 using Tavisca.Tripster.Contracts.DatabaseSettings;
+using Tavisca.Tripster.Contracts.Repository;
 using Tavisca.Tripster.Contracts.Service;
 using Tavisca.Tripster.Core.Service;
+using Tavisca.Tripster.Data.Models;
+using Tavisca.Tripster.MongoDB.Repository;
 using Tavisca.Tripster.MongoDB.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
-using Tavisca.Tripster.Web.Models;
+using Tavisca.Tripster.Web.Middleware;
 
 namespace Tavisca.Tripster.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
+
+            Log.Information("Starting up");
         }
 
         public IConfiguration Configuration { get; }
@@ -31,10 +47,9 @@ namespace Tavisca.Tripster.Web
             services.AddSingleton<TripDatabaseSettings>();
             services.AddSingleton<TripDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TripDatabaseSettings>>().Value);
-            services.AddSingleton<TripUnitOfWork>();
-            services.AddSingleton<UserUnitOfWork>();
-            services.AddSingleton<ITripService, TripService>();
-            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<TripUnitOfWork>();
+            services.AddScoped<ITripService, TripService>();
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -51,15 +66,13 @@ namespace Tavisca.Tripster.Web
                             .AddMvcOptions(o => o.OutputFormatters.Add(
                         new XmlDataContractSerializerOutputFormatter()
                         ));
-
-            services.AddDbContext<TaviscaTripsterWebContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("TaviscaTripsterWebContext")));
             
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-          
+
+            loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -68,6 +81,7 @@ namespace Tavisca.Tripster.Web
             {
                 app.UseHsts();
             }
+            app.UseMiddleware<SerilogMiddleware>();
             app.UseCors("AllowAll");
             app.UseMvc();
          

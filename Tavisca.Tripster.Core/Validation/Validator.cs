@@ -6,26 +6,26 @@ namespace Tavisca.Tripster.Core.Validation
 {
     public class Validator<TEntity> where TEntity : class
     {
-        private TransferObject<TEntity> _transferObject;
+        private Response<TEntity> _response;
         public TEntity Entity { get; set; }
         public Guid ID { get; set; }
         public Validator()
         {
-            _transferObject = new TransferObject<TEntity>();
+            _response = new Response<TEntity>();
         }
-        public TransferObject<TEntity> GetTransferObject()
+        public Response<TEntity> GetResponse()
         {
             if(Entity == null)
             {
-                _transferObject.ErrorMessage = $"{typeof(TEntity).Name} with {ID} not found";
-                _transferObject.ModelObject = null;
+                _response.ErrorMessage = $"{typeof(TEntity).Name} with {ID} not found";
+                _response.Model = null;
             }
             else
             {
-                _transferObject.ModelObject = Entity;
-                _transferObject.ErrorMessage = null;
+                _response.Model = Entity;
+                _response.ErrorMessage = null;
             }
-            return _transferObject;
+            return _response;
         }
 
     }
