@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Interface;
 
 namespace Tavisca.Tripster.Core.Provider
@@ -25,9 +26,9 @@ namespace Tavisca.Tripster.Core.Provider
                 EnableSsl = config.GetValue<bool>("Email:Smtp:EnableSsl")
             };
         }
-        public void send(MailMessage message)
+        public async Task send(MailMessage message)
         {
-            _smtpClient.SendAsync(message, null);
+            await _smtpClient.SendMailAsync(message);
         }
     }
 }

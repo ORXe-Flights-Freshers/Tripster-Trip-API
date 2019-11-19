@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Tavisca.Tripster.Contracts.Interface
 {
     public interface ISmtpClientBuilder
     {
-        void send(MailMessage message);
+        Task send(MailMessage message);
     }
 }

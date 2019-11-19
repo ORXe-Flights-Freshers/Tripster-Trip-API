@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,11 +14,11 @@ namespace Tavisca.Tripster.Web.Controllers
     public class TripController : Controller
     {
         private readonly ITripService _tripService;
-
-
-        public TripController(ITripService tripService)
+        private readonly ILogger<TripController> _logger;
+        public TripController(ITripService tripService, ILogger<TripController> logger)
         {
             _tripService = tripService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -32,15 +33,25 @@ namespace Tavisca.Tripster.Web.Controllers
         {
             var tripResponse = await _tripService.GetTripById(id);
             if (tripResponse.IsSuccess == true)
+            {
+                _logger.LogInformation($"{typeof(TripController).Name}: GetTripById request completed successfully");
                 return Ok(tripResponse.Trip);
+            }
+            _logger.LogError($"{typeof(TripController).Name}: GetTripById was not successfully completed");
             return NotFound(tripResponse.Message);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
-            var updatedTrip = await _tripService.UpdateTrip(id, trip);
-            return Ok(updatedTrip);
+            var tripResponse = await _tripService.UpdateTrip(id, trip);
+            if (tripResponse.IsSuccess == true)
+            {
+                _logger.LogInformation($"{typeof(TripController).Name}: UpdateTrip request completed successfully");
+                return Ok(tripResponse.Trip);
+            }
+            _logger.LogError($"{typeof(TripController).Name}: UpdateTrip was not successfully completed");
+            return NotFound(tripResponse.Message);
         }
 
         [HttpPost]
@@ -49,12 +60,5 @@ namespace Tavisca.Tripster.Web.Controllers
             await _tripService.CreateTrip(trip);
             return Ok(trip);
         }
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(Guid id)
-        //{   
-        //    await _tripService.Delete(id);
-        //    return Ok("deleted successfully");
-        //}
     }
 }
