@@ -21,5 +21,7 @@ namespace Tavisca.Tripster.Web
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseUrls(urls: "http://*:5001");
+
+        
     }
 }
