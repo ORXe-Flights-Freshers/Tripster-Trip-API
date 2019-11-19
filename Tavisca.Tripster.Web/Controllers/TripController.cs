@@ -14,7 +14,7 @@ namespace Tavisca.Tripster.Web.Controllers
     public class TripController : Controller
     {
         private readonly ITripService _tripService;
-
+            
         public TripController(ITripService tripService)
         {
             _tripService = tripService;
@@ -44,6 +44,7 @@ namespace Tavisca.Tripster.Web.Controllers
             _tripService.Add(trip);
             return trip;
         }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {

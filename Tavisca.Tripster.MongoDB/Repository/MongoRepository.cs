@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -68,10 +69,8 @@ namespace Tavisca.Tripster.MongoDB.Repository
         }
         public void UpdateUser(string email, TEntity entity)
         {
-            var requiredId = Builders<TEntity>.Filter.Eq("_id", email);
-            _collection.FindOneAndDelete(requiredId);
+            if(_collection.CountDocuments(filter: new BsonDocument("_id", email)) == 0)
             _collection.InsertOne(entity);
-             
         }
     }
 }
