@@ -22,17 +22,17 @@ namespace Tavisca.Tripster.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] EmailMessage emailMessage)
+        public async Task<ActionResult> Post([FromBody] EmailMessage emailMessage)
         {
 
             if (ModelState.IsValid)
             {
-                var response = _sendService.Send(emailMessage);
+                var response = await _sendService.Send(emailMessage);
                 if (response.IsSuccess == true)
                 {
                     return Ok(response);
                 }
-                return StatusCode(500);
+                return StatusCode(500, "Something went wrong on our side");
             }
             else
             {
