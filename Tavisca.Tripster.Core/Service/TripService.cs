@@ -55,5 +55,12 @@ namespace Tavisca.Tripster.Core.Service
             var updatedTrip = await _tripRepository.UpdateTrip(id, trip);
             return updatedTrip;
         }
+
+        public async Task <List<PopularTrip>> GetPopularTrips()
+        {
+            List<PopularTrip> popularTrips =  new List<PopularTrip>();
+            popularTrips = await _tripRepository.GetPopularTrips();
+            return popularTrips;
+        }
     }
 }
