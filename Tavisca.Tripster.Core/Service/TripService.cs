@@ -18,6 +18,7 @@ namespace Tavisca.Tripster.Core.Service
                            TripResponse tripResponse, ILogger<TripService> logger)
         {
             _tripRepository = tripRepository;
+            _tripResponse = tripResponse;
             _logger = logger;
         }
 
