@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Tavisca.Tripster.Data.Models
 {
-    public class PopularTripStop
+   public class PopularTripStop
     {
         public string StopId { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }
+
     }
 }
