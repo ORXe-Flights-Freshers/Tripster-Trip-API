@@ -15,7 +15,7 @@ namespace Tavisca.Tripster.Core.Service
         private TripResponse _tripResponse;
         private readonly ILogger<TripService> _logger;
         public TripService(TripRepository tripRepository,
-                           TripResponse tripResponse, ILogger<TripService> logger)
+                           TripResponse tripResponse, ILogger<TripService> logger = null)
         {
             _tripRepository = tripRepository;
             _tripResponse = tripResponse;
@@ -34,7 +34,7 @@ namespace Tavisca.Tripster.Core.Service
             {
                 _tripResponse.IsSuccess = false;
                 _tripResponse.Message = $"Trip with {id} not found";
-                _logger.LogError($"{typeof(TripService).Name}: {_tripResponse.Message}");
+                _logger?.LogError($"{typeof(TripService).Name}: {_tripResponse.Message}");
             }
             else
             {

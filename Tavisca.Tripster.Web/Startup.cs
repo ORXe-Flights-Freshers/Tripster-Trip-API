@@ -69,13 +69,14 @@ namespace Tavisca.Tripster.Web
 
             services.AddCors(options =>
             {
-
                 options.AddPolicy("AllowAll",
                     builder =>
                     {
                         builder
                         .AllowAnyOrigin()
-                        .AllowAnyMethod()
+                        .WithMethods("GET", "OPTIONS")
+                        .WithMethods("POST", "OPTIONS")
+                        .WithMethods("PUT", "OPTIONS")
                         .AllowAnyHeader()
                         .AllowCredentials();
                     });
