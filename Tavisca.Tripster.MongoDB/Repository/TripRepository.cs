@@ -66,8 +66,6 @@ namespace Tavisca.Tripster.MongoDB.Repository
         }
         PopularTripStop TranslateStopToPopularTripStop(Stop stop)
         {
-
-
             PopularTripStop popularTripStop = new PopularTripStop();
             if (stop != null)
             {
@@ -77,8 +75,5 @@ namespace Tavisca.Tripster.MongoDB.Repository
             }
             return popularTripStop;
         }
-
-
-
     }
 }
