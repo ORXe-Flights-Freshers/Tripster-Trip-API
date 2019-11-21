@@ -18,14 +18,16 @@ namespace Tavisca.Tripster.Core.Service
         {
             _popularTripRepository = popularTripRepository;
         }
-        public async Task<IEnumerable<PopularTrip>> GetPopularTrips()
+        public async Task<IEnumerable<PopularTrip>> GetAllPopularTrips()
         {
-            //var  popularTrips = new List<PopularTrip>();
-            //popularTrips = await _popularTripRepository.GetAll();
-            //return popularTrips;
-            return await _popularTripRepository.GetAll();
+            return await _popularTripRepository.GetAllPopularTrips();
         }
 
+        public async Task<IEnumerable<PopularTrip>> GetPopularTripsByLimit(int limit)
+        {
+            return await _popularTripRepository.GetPopularTripsByLimit(limit);
+        }
+     
         public async Task AddToPopularTrip(Trip trip)
         {
             await _popularTripRepository.AddToPopularTrip(trip);
