@@ -1,6 +1,4 @@
-﻿
-
-namespace Tavisca.Tripster.Tests
+﻿namespace Tavisca.Tripster.Tests
 {
     public class BaseRepositoryTests
     {

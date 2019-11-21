@@ -22,6 +22,5 @@ namespace Tavisca.Tripster.MongoDB.Repository
             return updatedEntity;
         }
 
-        
     }
 }

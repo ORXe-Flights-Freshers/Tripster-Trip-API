@@ -19,9 +19,9 @@ namespace Tavisca.Tripster.Web
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
-
+            StaticConfiguration = configuration;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -33,11 +33,13 @@ namespace Tavisca.Tripster.Web
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();
-
+            DatabaseSettings.ConnectionString = Configuration["ConnectionString"];
+            DatabaseSettings.DatabaseName = Configuration["DatabaseName"];
         }
 
         public IConfiguration Configuration { get; }
-        
+        public static IConfiguration StaticConfiguration { get; private set; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -62,16 +64,20 @@ namespace Tavisca.Tripster.Web
             services.AddScoped<IPopularTripService, PopularTripService>();
             services.AddScoped<PopularTripRepository>();
             services.AddScoped<TripResponse>();
-            
+
+            services.AddSingleton<FuelPriceService>();
+
+
             services.AddCors(options =>
             {
-
                 options.AddPolicy("AllowAll",
                     builder =>
                     {
                         builder
                         .AllowAnyOrigin()
-                        .AllowAnyMethod()
+                        .WithMethods("GET", "OPTIONS")  
+                        .WithMethods("POST", "OPTIONS")
+                        .WithMethods("PUT", "OPTIONS")
                         .AllowAnyHeader()
                         .AllowCredentials();
                     });
