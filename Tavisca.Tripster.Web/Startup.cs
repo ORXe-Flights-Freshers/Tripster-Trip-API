@@ -74,7 +74,7 @@ namespace Tavisca.Tripster.Web
                     {
                         builder
                         .AllowAnyOrigin()
-                        .WithMethods("GET", "OPTIONS")
+                        .WithMethods("GET", "OPTIONS")  
                         .WithMethods("POST", "OPTIONS")
                         .WithMethods("PUT", "OPTIONS")
                         .AllowAnyHeader()

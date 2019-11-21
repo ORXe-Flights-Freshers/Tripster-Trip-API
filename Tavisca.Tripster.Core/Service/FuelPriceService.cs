@@ -1,15 +1,20 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.Core.Service
 {
     public class FuelPriceService
     {
+        private ILogger<FuelPriceService> _logger;
+        public FuelPriceService(ILogger<FuelPriceService> logger)
+        {
+            _logger = logger;
+        }
         public async Task<double> GetPetrolPrice(string cityName)
         {
             var queryString = $"fuel+price+in+{cityName}";
@@ -21,7 +26,15 @@ namespace Tavisca.Tripster.Core.Service
             var div = htmlDocument.DocumentNode.Descendants("div")
                                   .Where(n => n.InnerHtml.Contains("class")).ToList()[19].InnerText;
             var digits = Regex.Split(div, @"\D+");
-            var price = digits[1] +"."+ digits[2];
+            string price = "";
+            try
+            {
+                 price = digits[1] + "." + digits[2];
+            }
+            catch (Exception)
+            {
+                _logger.LogError($"Petrol Price for {cityName} not found");
+            }
             if (double.TryParse(price, out double petrolPrice))
                 return Math.Round(petrolPrice, 2);
             return -1;

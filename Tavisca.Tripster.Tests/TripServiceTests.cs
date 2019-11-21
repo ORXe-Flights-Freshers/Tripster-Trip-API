@@ -49,7 +49,7 @@ namespace Tavisca.Tripster.Tests
                          new Hotel
                         {
                             PlaceId = "3828088",
-                            Name = "FabHotel Palace Residency",
+                            Name = "FabHotel Palace Residency Plaza",
                             Description = "L.G.C. 17, 1/1, Lal Bahadur Shastri Marg,",
                             Location = new Location
                             {
@@ -138,7 +138,7 @@ namespace Tavisca.Tripster.Tests
             _tripService = new TripService(_tripRepository, _tripResponse);
             var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aef");
             var trip =  _tripService.GetTripById(id).Result;
-            trip.IsSuccess.ShouldBe(true);
+            trip.IsSuccess.ShouldBeTrue();
         }
         [Fact]
         public void GetTripById_returns_null()
@@ -150,7 +150,31 @@ namespace Tavisca.Tripster.Tests
             _tripService = new TripService(_tripRepository, _tripResponse);
             var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aee");
             var trip = _tripService.GetTripById(id).Result;
-            trip.IsSuccess.ShouldBe(false);
+            trip.IsSuccess.ShouldBeFalse();
+        }
+        [Fact]
+        public void UpdateTrip_returns_a_valid_trip()
+        {
+            DatabaseSettings.ConnectionString = "mongodb://3.14.69.62:27017";
+            DatabaseSettings.DatabaseName = "TripDB";
+            _tripResponse = new TripResponse();
+            _tripRepository = new TripRepository();
+            _tripService = new TripService(_tripRepository, _tripResponse);
+            var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aef");
+            var updatedTrip = _tripService.UpdateTrip(id, _trip).Result;
+            updatedTrip.IsSuccess.ShouldBeTrue();
+        }
+        [Fact]
+        public void UpdateTrip_returns_null()
+        {
+            DatabaseSettings.ConnectionString = "mongodb://3.14.69.62:27017";
+            DatabaseSettings.DatabaseName = "TripDB";
+            _tripResponse = new TripResponse();
+            _tripRepository = new TripRepository();
+            _tripService = new TripService(_tripRepository, _tripResponse);
+            var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aee");
+            var updatedTrip = _tripService.UpdateTrip(id, _trip).Result;
+            updatedTrip.IsSuccess.ShouldBeFalse();
         }
     }
 }
