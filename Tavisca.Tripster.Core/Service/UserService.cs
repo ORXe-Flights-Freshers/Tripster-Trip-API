@@ -1,49 +1,71 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Tavisca.Tripster.Contracts.Service;
-using Tavisca.Tripster.Core.Validation;
+using System.Threading.Tasks;
+using Tavisca.Tripster.Contracts.Interface;
+using Tavisca.Tripster.Contracts.Response;
 using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Tavisca.Tripster.MongoDB.Repository;
 
 namespace Tavisca.Tripster.Core.Service
 {
     public class UserService : IUserService
-    {   
-        private UserUnitOfWork _userUnitofWork;
-        private Validator<User> _validator;
-        public UserService(UserUnitOfWork userUnitofWork)
+    {
+        private UserRepository _userRepository;
+        private UserResponse _userResponse;
+        private readonly ILogger<UserService> _logger;
+        public UserService(UserRepository userRepository,
+                           UserResponse userResponse, ILogger<UserService> logger)
         {
-            _validator = new Validator<User>();
-            _userUnitofWork = userUnitofWork;
-        }
-        public void Add(User user)
-        {
-            _userUnitofWork.User.UpdateUser(user.Email,user);
-        }
-
-        public void Delete(string email)
-        {
-            _userUnitofWork.User.Delete(email);
+            _userRepository = userRepository;
+            _userResponse = userResponse;
+            _logger = logger;
         }
 
-        public TransferObject<User> Get(string email)
+        public async Task CreateUser(User user)
         {
-            var user = _userUnitofWork.User.Get(email);
-            _validator.Entity = user;
-             var transferObject = _validator.GetTransferObject();
-            return transferObject;
+            await _userRepository.CreateUser(user.UserId,user);
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<UserResponse> GetUserById(string id)
         {
-            return _userUnitofWork.User.GetAll();
+            var user = await _userRepository.GetUserById(id);
+            if(user == null)
+            {
+                _userResponse.IsSuccess = false;
+                _userResponse.Message = $"User with {id} not found";
+                _logger.LogError($"{typeof(UserService).Name}: {_userResponse.Message}");
+            }
+            else
+            {
+                _userResponse.IsSuccess = true;
+                _userResponse.User = user;
+            }
+            return _userResponse;
         }
 
-        public void Update(string email, User user)
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            _userUnitofWork.User.Update(email, user);
+            return await _userRepository.GetAll();
         }
+
+        public async Task<UserResponse> CreateUser(string id, User user)
+        {
+            var updatedUser = await _userRepository.CreateUser(id, user);
+            if(updatedUser == null)
+            {
+                _userResponse.IsSuccess = false;
+                _userResponse.Message = $"User with {id} not found";
+                _logger.LogError($"{typeof(UserService).Name}: {_userResponse.Message}");
+            }
+            else
+            {
+                _userResponse.IsSuccess = true;
+                _userResponse.User = updatedUser;
+            }
+            return _userResponse;
+        }
+
+    
     }
 }

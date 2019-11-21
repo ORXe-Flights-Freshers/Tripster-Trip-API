@@ -12,5 +12,6 @@ namespace Tavisca.Tripster.Contracts.Interface
         Task<IEnumerable<Trip>> GetAllTrips();
         Task CreateTrip(Trip trip);
         Task<TripResponse> UpdateTrip(Guid id, Trip trip);
+        Task<IEnumerable<Trip>> GetTripByUserID(string id);
     }
 }

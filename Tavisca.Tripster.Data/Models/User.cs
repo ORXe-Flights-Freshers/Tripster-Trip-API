@@ -12,11 +12,10 @@ namespace Tavisca.Tripster.Data.Models
         [BsonElement("_id")]
         [BsonIgnoreIfDefault]
  
- 
+        public string UserId { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
-        public string Image { get; set; }
-        public List<Guid> Trips { get; set; }
+        public string PhotoUrl { get; set; }
         public string Provider { get; set; }
     }
 }

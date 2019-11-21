@@ -15,7 +15,8 @@ namespace Tavisca.Tripster.Data.Models
         public Stop Destination { get; set; }
         public List<Stop> Stops { get; set; }
         public int Mileage { get; set; }
+        public string UserId { get; set; }
 
-        
+
     }
 }

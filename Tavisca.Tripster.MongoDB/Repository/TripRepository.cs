@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tavisca.Tripster.Data.Models;
 
@@ -18,6 +19,14 @@ namespace Tavisca.Tripster.MongoDB.Repository
             var requiredId = Builders<Trip>.Filter.Eq("_id", id);
             var updatedEntity = await Collection.FindOneAndReplaceAsync(requiredId, trip);
             return updatedEntity;
+        }
+
+        public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
+        {
+            var requiredId = Builders<Trip>.Filter.Eq("UserId", id);
+
+            return await Task.Run(() => Collection.FindAsync(requiredId).Result.ToList());
+
         }
     }
 }

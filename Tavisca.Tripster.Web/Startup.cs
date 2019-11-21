@@ -57,10 +57,13 @@ namespace Tavisca.Tripster.Web
 
 
             services.AddScoped<TripRepository>();
+            services.AddScoped<UserRepository>();
 
             services.AddScoped<ITripService, TripService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<TripResponse>();
+            services.AddScoped<UserResponse>();
             
             services.AddCors(options =>
             {

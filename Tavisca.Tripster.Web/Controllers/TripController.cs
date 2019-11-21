@@ -41,6 +41,14 @@ namespace Tavisca.Tripster.Web.Controllers
             return NotFound(tripResponse.Message);
         }
 
+        
+        [HttpGet("userid/{id}")]
+        public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
+        {
+            var tripList = await _tripService.GetTripByUserID(id);
+            return tripList;
+        }
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
