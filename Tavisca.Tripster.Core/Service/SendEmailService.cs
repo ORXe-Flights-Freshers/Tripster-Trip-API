@@ -40,6 +40,7 @@ namespace Tavisca.Tripster.Core.Service
                 mailMessage.From = from;
                 mailMessage.Subject = emailMessage.Subject;
                 mailMessage.Body = emailMessage.Body;
+                mailMessage.IsBodyHtml = true;
                 await Task.Run(() => _smtpClient.send(mailMessage));
                 _emailResponse.IsSuccess = true;
                 _emailResponse.Message = $"Email sent successfully";
