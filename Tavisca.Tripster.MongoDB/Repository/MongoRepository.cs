@@ -21,6 +21,6 @@ namespace Tavisca.Tripster.MongoDB.Repository
         {
             await Collection.InsertOneAsync(entity);
         }
-
+ 
     }
 }
