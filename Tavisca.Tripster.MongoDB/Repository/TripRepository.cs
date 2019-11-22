@@ -21,7 +21,6 @@ namespace Tavisca.Tripster.MongoDB.Repository
             var updatedEntity = await Collection.FindOneAndReplaceAsync(requiredId, trip);
             return updatedEntity;
         }
-
         public async Task<List<PopularTrip>> GetPopularTrips()
         {
             List<PopularTrip> popularTrips = new List<PopularTrip>();
@@ -75,5 +74,6 @@ namespace Tavisca.Tripster.MongoDB.Repository
             }
             return popularTripStop;
         }
+    
     }
 }
