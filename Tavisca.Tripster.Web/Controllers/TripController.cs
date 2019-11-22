@@ -66,5 +66,11 @@ namespace Tavisca.Tripster.Web.Controllers
             await _popularTripService.AddToPopularTrip(trip);
             return Ok(trip);
         }
+        [HttpGet("userid/{id}")]
+        public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
+        {
+            var tripList = await _tripService.GetTripByUserID(id);
+            return tripList;
+        }
     }
 }

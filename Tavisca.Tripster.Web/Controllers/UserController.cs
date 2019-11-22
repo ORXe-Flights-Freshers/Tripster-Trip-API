@@ -41,11 +41,7 @@ namespace Tavisca.Tripster.Web.Controllers
             return NotFound(userResponse.Message);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(long id, [FromBody] TripId tripId)
-        {
-            return null;
-        }
+      
 
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] User user)
