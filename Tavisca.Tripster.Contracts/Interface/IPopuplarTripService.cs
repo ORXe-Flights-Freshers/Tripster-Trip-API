@@ -9,8 +9,8 @@ namespace Tavisca.Tripster.Contracts.Interface
        public interface IPopularTripService
     {
 
-        Task<IEnumerable<PopularTrip>> GetPopularTrips();
+        Task<IEnumerable<PopularTrip>> GetAllPopularTrips();
+        Task<IEnumerable<PopularTrip>> GetPopularTripsByLimit( int limit);
         Task AddToPopularTrip(Trip trip);
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Tavisca.Tripster.Data.Models;
 
@@ -19,9 +20,8 @@ namespace Tavisca.Tripster.MongoDB.Repository
                 if (popularTrip.Source.StopId == trip.Source.StopId && popularTrip.Destination.StopId == trip.Destination.StopId)
                 {
                     popularTrip.Count += 1;
-                    var count = popularTrip.Count;
                     var requiredId = Builders<PopularTrip>.Update.Set(obj => obj.Count, popularTrip.Count);
-                    var updatedEntity =  Collection.UpdateOne(obj => obj.Id == popularTrip.Id, requiredId);
+                    var updatedEntity = Collection.UpdateOne(obj => obj.Id == popularTrip.Id, requiredId);
                     tripAlreadyExist = true;
                     break;
                 }
@@ -32,8 +32,8 @@ namespace Tavisca.Tripster.MongoDB.Repository
                 popularTripEntity.Count = 1;
                 await Create(popularTripEntity);
             }
-        }
 
+        }
         PopularTrip TranslateTripToPopularTrip(Trip trip)
         {
             PopularTrip popularTrip = new PopularTrip();
@@ -58,7 +58,19 @@ namespace Tavisca.Tripster.MongoDB.Repository
             return popularTripStop;
         }
 
-   
 
+        public async Task<IEnumerable<PopularTrip>> GetAllPopularTrips()
+        {
+            var popularTripList = (await GetAll()).OrderByDescending(obj => obj.Count);
+            return popularTripList;
+
+        }
+
+        public async Task<IEnumerable<PopularTrip>> GetPopularTripsByLimit(int limit)
+        {
+            var popularTripList = (await GetAll()).OrderByDescending(obj => obj.Count).Take(limit);
+            return popularTripList;
+
+        }
     }
 }

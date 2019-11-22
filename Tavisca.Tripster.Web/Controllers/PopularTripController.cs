@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using Tavisca.Tripster.Contracts.Interface;
 
 namespace Tavisca.Tripster.Web.Controllers
 {
+    [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     [ApiController]
     public class PopularTripController : ControllerBase
@@ -22,10 +24,20 @@ namespace Tavisca.Tripster.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PopularTrip()
+        public async Task<IActionResult> GetAllPopularTrips()
         {
-            var popularTrips = await _popularTripService.GetPopularTrips();
+            var popularTrips = await _popularTripService.GetAllPopularTrips();
             return Ok(popularTrips);
         }
+
+        [HttpGet("{limit}")]
+        public async Task<IActionResult> GetPopularTripsByLimit(int limit)
+        {
+            var popularTrips = await _popularTripService.GetPopularTripsByLimit(limit);
+            return Ok(popularTrips);
+        }
+
+
+
     }
 }

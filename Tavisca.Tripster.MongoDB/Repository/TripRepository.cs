@@ -74,6 +74,5 @@ namespace Tavisca.Tripster.MongoDB.Repository
             }
             return popularTripStop;
         }
-    
     }
 }
