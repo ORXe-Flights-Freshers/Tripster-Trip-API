@@ -1,5 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.IdGenerators;
+    using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +16,7 @@ namespace Tavisca.Tripster.Data.Models
         public List<Stop> Stops { get; set; }
         public int Mileage { get; set; }
         public string UserId { get; set; }
+
 
     }
 }
