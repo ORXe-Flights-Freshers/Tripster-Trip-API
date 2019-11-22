@@ -14,10 +14,12 @@ namespace Tavisca.Tripster.Web.Controllers
     public class TripController : Controller
     {
         private readonly ITripService _tripService;
+        private readonly IPopularTripService _popularTripService;
         private readonly ILogger<TripController> _logger;
-        public TripController(ITripService tripService, ILogger<TripController> logger)
+        public TripController(ITripService tripService, IPopularTripService popularTripService, ILogger<TripController> logger)
         {
             _tripService = tripService;
+            _popularTripService = popularTripService;
             _logger = logger;
         }
 
@@ -42,13 +44,7 @@ namespace Tavisca.Tripster.Web.Controllers
         }
 
         
-        [HttpGet("userid/{id}")]
-        public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
-        {
-            var tripList = await _tripService.GetTripByUserID(id);
-            return tripList;
-        }
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
@@ -62,10 +58,12 @@ namespace Tavisca.Tripster.Web.Controllers
             return NotFound(tripResponse.Message);
         }
 
+       
         [HttpPost]
         public async Task<IActionResult> CreateTrip([FromBody] Trip trip)
         {
             await _tripService.CreateTrip(trip);
+            await _popularTripService.AddToPopularTrip(trip);
             return Ok(trip);
         }
     }

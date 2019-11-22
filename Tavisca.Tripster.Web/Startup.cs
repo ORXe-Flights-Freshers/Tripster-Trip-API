@@ -65,7 +65,8 @@ namespace Tavisca.Tripster.Web
 
 
             services.AddScoped<ITripService, TripService>();
-
+            services.AddScoped<IPopularTripService, PopularTripService>();
+            services.AddScoped<PopularTripRepository>();
             services.AddScoped<TripResponse>();
             services.AddScoped<UserResponse>();
 

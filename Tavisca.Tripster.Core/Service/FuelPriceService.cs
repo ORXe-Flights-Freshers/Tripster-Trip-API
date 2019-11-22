@@ -11,7 +11,7 @@ namespace Tavisca.Tripster.Core.Service
     public class FuelPriceService
     {
         private ILogger<FuelPriceService> _logger;
-        public FuelPriceService(ILogger<FuelPriceService> logger)
+        public FuelPriceService(ILogger<FuelPriceService> logger = null)
         {
             _logger = logger;
         }
@@ -33,7 +33,7 @@ namespace Tavisca.Tripster.Core.Service
             }
             catch (Exception)
             {
-                _logger.LogError($"Petrol Price for {cityName} not found");
+                _logger?.LogError($"Petrol Price for {cityName} not found");
             }
             if (double.TryParse(price, out double petrolPrice))
                 return Math.Round(petrolPrice, 2);
