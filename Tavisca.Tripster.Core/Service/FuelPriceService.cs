@@ -23,21 +23,25 @@ namespace Tavisca.Tripster.Core.Service
             var page = await httpclient.GetStringAsync(url);
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(page);
-            var div = htmlDocument.DocumentNode.Descendants("div")
-                                  .Where(n => n.InnerHtml.Contains("class")).ToList()[19].InnerText;
+            var tag = htmlDocument.DocumentNode.Descendants("div")
+                                  .Where(n => n.InnerHtml.Contains("class")).ToList()[19];
+            var indexOfRupeeSymbol = tag.InnerHtml.IndexOf("&#8377");
+            tag.InnerHtml = (indexOfRupeeSymbol >= 0) ? tag.InnerHtml.Substring(indexOfRupeeSymbol + 6) : tag.InnerHtml;
+            var div = tag.InnerText;
+            
             var digits = Regex.Split(div, @"\D+");
-            string price = "";
+            var price = digits[1] + "." + digits[2];
+            double petrolPrice = 0.0;
             try
             {
-                 price = digits[1] + "." + digits[2];
+                double.TryParse(price, out petrolPrice);
             }
             catch (Exception)
             {
                 _logger?.LogError($"Petrol Price for {cityName} not found");
+                return -1;
             }
-            if (double.TryParse(price, out double petrolPrice))
-                return Math.Round(petrolPrice, 2);
-            return -1;
+            return Math.Round(petrolPrice, 2);
         }
     }
 }
