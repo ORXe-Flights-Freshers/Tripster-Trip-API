@@ -17,131 +17,54 @@ namespace Tavisca.Tripster.Tests
         private TripRepository _tripRepository;
         private Trip _trip = new Trip
         {
-            Id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aef"),
+            Id = new Guid("d7b2b353-1155-4ab7-b57f-7c2121df2a50"),
             Source = new Stop
             {
-                StopId = "ChIJwe1EZjDG5zsRaYxkjY_tpF0",
-                Name = "Mumbai",
+                StopId = "ChIJL_P_CXMEDTkRw0ZdG-0GVvw",
+                Name = "Delhi",
                 Location = new Location
                 {
-                    Latitude = 19.0759837,
-                    Longitude = 72.877655900000036
+                    Latitude = 28.686273800000009,
+                    Longitude = 77.221783100000039
                 },
-                Arrival = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                Departure = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                Hotels = new List<Hotel>
-                    {
-                        new Hotel
-                        {
-                            PlaceId = null,
-                            Name = "शिव स्मारक",
-                            Description = "Mumbai",
-                            Location = new Location
-                            {
-                                Latitude = 19.0759836,
-                                Longitude = 2.877655799999957
-                            },
-                            PlaceType = "Attraction",
-                            Arrival = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            Departure = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            ImageUrl = null
-                        },
-                         new Hotel
-                        {
-                            PlaceId = "3828088",
-                            Name = "FabHotel Palace Residency Plaza",
-                            Description = "L.G.C. 17, 1/1, Lal Bahadur Shastri Marg,",
-                            Location = new Location
-                            {
-                                Latitude = 19.07154,
-                                Longitude = 72.87595
-                            },
-                            PlaceType = null,
-                            Arrival = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            Departure = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            ImageUrl = null
-                        },
-                         new Hotel
-                        {
-                            PlaceId = "2077668",
-                            Name = "GSK Hotel",
-                            Description = "162-A Lal Bahadur Shastri Marg,",
-                            Location = new Location
-                            {
-                                Latitude = 19.0674,
-                                Longitude = 72.87489
-                            },
-                            PlaceType = null,
-                            Arrival = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            Departure = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            ImageUrl = null
-                        },
-                         new Hotel
-                        {
-                            PlaceId = "3828088",
-                            Name = "FabHotel Palace Residency",
-                            Description = "L.G.C. 17, 1/1, Lal Bahadur Shastri Marg,",
-                            Location = new Location
-                            {
-                                Latitude = 19.07154,
-                                Longitude = 72.87595
-                            },
-                            PlaceType = null,
-                            Arrival = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            Departure = "Mon Nov 11 2019 11:00:23 GMT+0530 (India Standard Time)",
-                            ImageUrl = null
-                        }
-                    },
+                Arrival = "Fri Nov 22 2019 11:28:52 GMT+0530 (India Standard Time)",
+                Departure = "Fri Nov 22 2019 11:28:52 GMT+0530 (India Standard Time)",
+                Hotels = {},
                 Attractions = {}
             },
             Destination = new Stop
             {
-                StopId = "hIJZ_YISduC-DkRvCxsj-Yw40M",
-                Name = "Kolkata",
+                StopId = "ChIJSecWkj2v5jkRCUy4AqpbDgE",
+                Name = "Assam",
                 Location = new Location
                 {
-                    Latitude = 22.572646,
-                    Longitude = 88.363894999999957
+                    Latitude = 27.283924,
+                    Longitude = 88.659355
                 },
-                Arrival = "Wed Nov 13 2019 04:48:13 GMT+0530 (India Standard Time)",
-                Departure = "Wed Nov 13 2019 04:48:13 GMT+0530 (India Standard Time)",
-                Hotels = { },
+                Arrival = "Sat Nov 23 2019 15:42:04 GMT+0530 (India Standard Time)",
+                Departure = "Mon Nov 13 2090 11:37:09 GMT+0530 (India Standard Time)",
+                Hotels = {},
                 Attractions = {}
             },
-            Stops = new List<Stop>
-            {
-              new Stop
-              {
-                   StopId = "ChIJRYHfiwkB6DsRWIbipWBKa2k",
-                   Name = "Lonavla",
-                   Location = new Location
-                   {
-                      Latitude = 18.7557237,
-                      Longitude = 73.409075700000017
-                   },
-                   Arrival = "Mon Nov 11 2019 12:44:05 GMT+0530 (India Standard Time)",
-                   Departure = "Mon Nov 11 2019 12:44:04 GMT+0530 (India Standard Time)",
-                   Hotels = { },
-                   Attractions = {}
-                }    
-              },
-            Mileage = 22
+            Stops = { },
+            Mileage = 25,
+            UserId = null
         };
 
         [Fact]
-        public void GetTripById_returns_a_valid_trip()
+        public void GetTripById_WithValidID_Returns_a_valid_trip()
         {
             DatabaseSettings.ConnectionString = "mongodb://3.14.69.62:27017";
             DatabaseSettings.DatabaseName = "TripDB";
             _tripResponse = new TripResponse();
             _tripRepository = new TripRepository();
             _tripService = new TripService(_tripRepository, _tripResponse);
-            var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aef");
+            var id = new Guid("d7b2b353-1155-4ab7-b57f-7c2121df2a50");
             var trip =  _tripService.GetTripById(id).Result;
             trip.IsSuccess.ShouldBeTrue();
         }
         [Fact]
-        public void GetTripById_returns_null()
+        public void GetTripById_WithInvalidID_Returns_null()
         {
             DatabaseSettings.ConnectionString = "mongodb://3.14.69.62:27017";
             DatabaseSettings.DatabaseName = "TripDB";
@@ -153,19 +76,19 @@ namespace Tavisca.Tripster.Tests
             trip.IsSuccess.ShouldBeFalse();
         }
         [Fact]
-        public void UpdateTrip_returns_a_valid_trip()
+        public void UpdateTrip_WithValidID_And_Model_Returns_a_valid_trip()
         {
             DatabaseSettings.ConnectionString = "mongodb://3.14.69.62:27017";
             DatabaseSettings.DatabaseName = "TripDB";
             _tripResponse = new TripResponse();
             _tripRepository = new TripRepository();
             _tripService = new TripService(_tripRepository, _tripResponse);
-            var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aef");
+            var id = new Guid("d7b2b353-1155-4ab7-b57f-7c2121df2a50");
             var updatedTrip = _tripService.UpdateTrip(id, _trip).Result;
             updatedTrip.IsSuccess.ShouldBeTrue();
         }
         [Fact]
-        public void UpdateTrip_returns_null()
+        public void UpdateTrip_WithValidID_And_Model_Returns_null()
         {
             DatabaseSettings.ConnectionString = "mongodb://3.14.69.62:27017";
             DatabaseSettings.DatabaseName = "TripDB";
