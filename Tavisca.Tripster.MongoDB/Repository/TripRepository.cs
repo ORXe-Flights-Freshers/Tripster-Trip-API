@@ -14,7 +14,7 @@ namespace Tavisca.Tripster.MongoDB.Repository
             var requiredId = Builders<Trip>.Filter.Eq("_id", id);
             return await Task.Run(() => Collection.FindAsync(requiredId).Result.FirstOrDefault());
         }
-
+        
         public async Task<Trip> UpdateTrip(Guid id, Trip trip)
         {
             var requiredId = Builders<Trip>.Filter.Eq("_id", id);
@@ -51,7 +51,6 @@ namespace Tavisca.Tripster.MongoDB.Repository
 
             return popularTrips;
         }
-
         PopularTrip TranslateTripToPopularTrip(Trip trip)
         {
             PopularTrip popularTrip = new PopularTrip();
@@ -73,6 +72,11 @@ namespace Tavisca.Tripster.MongoDB.Repository
                 popularTripStop.Location = stop.Location;
             }
             return popularTripStop;
+        }
+        public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
+        {
+            var requiredId = Builders<Trip>.Filter.Eq("UserId", id);
+            return await Task.Run(() => Collection.FindAsync(requiredId).Result.ToList());
         }
     }
 }

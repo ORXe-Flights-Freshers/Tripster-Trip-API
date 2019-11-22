@@ -66,5 +66,9 @@ namespace Tavisca.Tripster.Core.Service
             return _tripResponse;
         }
 
+        public Task<IEnumerable<Trip>> GetTripByUserID(string id)
+        {
+           return   _tripRepository.GetTripByUserId(id);
+        }
     }
 }
