@@ -43,8 +43,6 @@ namespace Tavisca.Tripster.Web.Controllers
             return NotFound(tripResponse.Message);
         }
 
-        
-
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
@@ -58,7 +56,6 @@ namespace Tavisca.Tripster.Web.Controllers
             return NotFound(tripResponse.Message);
         }
 
-       
         [HttpPost]
         public async Task<IActionResult> CreateTrip([FromBody] Trip trip)
         {
@@ -66,6 +63,7 @@ namespace Tavisca.Tripster.Web.Controllers
             await _popularTripService.AddToPopularTrip(trip);
             return Ok(trip);
         }
+
         [HttpGet("userid/{id}")]
         public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
         {
