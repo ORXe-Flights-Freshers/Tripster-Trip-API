@@ -17,7 +17,7 @@ namespace Tavisca.Tripster.Tests
         private TripRepository _tripRepository;
         private Trip _trip = new Trip
         {
-            Id = new Guid("d7b2b353-1155-4ab7-b57f-7c2121df2a50"),
+            Id = new Guid("c17366eb-76e8-409b-a80c-e99e30e14944"),
             Source = new Stop
             {
                 StopId = "ChIJL_P_CXMEDTkRw0ZdG-0GVvw",
@@ -59,7 +59,7 @@ namespace Tavisca.Tripster.Tests
             _tripResponse = new TripResponse();
             _tripRepository = new TripRepository();
             _tripService = new TripService(_tripRepository, _tripResponse);
-            var id = new Guid("d7b2b353-1155-4ab7-b57f-7c2121df2a50");
+            var id = new Guid("c17366eb-76e8-409b-a80c-e99e30e14944");
             var trip =  _tripService.GetTripById(id).Result;
             trip.IsSuccess.ShouldBeTrue();
         }
@@ -71,7 +71,7 @@ namespace Tavisca.Tripster.Tests
             _tripResponse = new TripResponse();
             _tripRepository = new TripRepository();
             _tripService = new TripService(_tripRepository, _tripResponse);
-            var id = new Guid("f89fa128-ec74-4172-9eb4-5817b17b6aee");
+            var id = new Guid("d12366eb-76e8-409b-a80c-e99e30e14944");
             var trip = _tripService.GetTripById(id).Result;
             trip.IsSuccess.ShouldBeFalse();
         }
@@ -83,7 +83,7 @@ namespace Tavisca.Tripster.Tests
             _tripResponse = new TripResponse();
             _tripRepository = new TripRepository();
             _tripService = new TripService(_tripRepository, _tripResponse);
-            var id = new Guid("d7b2b353-1155-4ab7-b57f-7c2121df2a50");
+            var id = new Guid("c17366eb-76e8-409b-a80c-e99e30e14944");
             var updatedTrip = _tripService.UpdateTrip(id, _trip).Result;
             updatedTrip.IsSuccess.ShouldBeTrue();
         }
