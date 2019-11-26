@@ -25,15 +25,17 @@ namespace Tavisca.Tripster.Core.Service
             htmlDocument.LoadHtml(page);
             var tag = htmlDocument.DocumentNode.Descendants("div")
                                   .Where(n => n.InnerHtml.Contains("class")).ToList()[19];
+             
             var indexOfRupeeSymbol = tag.InnerHtml.IndexOf("&#8377");
             tag.InnerHtml = (indexOfRupeeSymbol >= 0) ? tag.InnerHtml.Substring(indexOfRupeeSymbol + 6) : tag.InnerHtml;
             var div = tag.InnerText;
             
             var digits = Regex.Split(div, @"\D+");
-            var price = digits[1] + "." + digits[2];
+            string price = ""; ;
             double petrolPrice = 0.0;
             try
             {
+                price = digits[1] + "." + digits[2];
                 double.TryParse(price, out petrolPrice);
             }
             catch (Exception)
