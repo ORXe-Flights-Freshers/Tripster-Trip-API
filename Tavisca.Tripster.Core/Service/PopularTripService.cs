@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Exceptions;
 using Tavisca.Tripster.Contracts.Interface;
 using Tavisca.Tripster.Contracts.Response;
 using Tavisca.Tripster.Data.Models;
 using Tavisca.Tripster.MongoDB.Repository;
-
 namespace Tavisca.Tripster.Core.Service
 {
    public class PopularTripService : IPopularTripService
@@ -16,7 +13,7 @@ namespace Tavisca.Tripster.Core.Service
         private PopularTripResponse _popularTripResponse;
         private readonly ILogger<TripService> _logger;
         public PopularTripService(PopularTripRepository popularTripRepository,
-                                  PopularTripResponse popularTripResponse, ILogger<TripService> logger)
+                                  PopularTripResponse popularTripResponse, ILogger<TripService> logger = null)
         {
             _popularTripRepository = popularTripRepository;
             _popularTripResponse = popularTripResponse;
@@ -24,11 +21,13 @@ namespace Tavisca.Tripster.Core.Service
         }
         public async Task<PopularTripResponse> GetPopularTripsByLimit(int limit)
         {
+            
             var popularTrips = await _popularTripRepository.GetPopularTripsByLimit(limit);
             if (popularTrips == null)
             {
                 _popularTripResponse.IsSuccess = false;
                 _popularTripResponse.Message = "Popular trips do not exist";
+                _logger?.LogInformation(_popularTripResponse.Message);
             }
             else
             {
@@ -48,12 +47,12 @@ namespace Tavisca.Tripster.Core.Service
             catch (TripNotFoundException tnfe)
             {
                 _popularTripResponse.IsSuccess = false;
-                _logger.LogError(tnfe.Message);
+                _logger?.LogError(tnfe.Message);
             }
             catch (StopNotFoundException snfe)
             {
                 _popularTripResponse.IsSuccess = false;
-                _logger.LogError(snfe.Message);
+                _logger?.LogError(snfe.Message);
             }
         }
     }
