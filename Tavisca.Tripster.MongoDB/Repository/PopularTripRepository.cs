@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tavisca.Tripster.Contracts.Exceptions;
 using Tavisca.Tripster.Data.Models;
 
 namespace Tavisca.Tripster.MongoDB.Repository
@@ -13,10 +13,14 @@ namespace Tavisca.Tripster.MongoDB.Repository
         {
             IEnumerable<PopularTrip> allPopularTrips = await GetAll();
             bool tripAlreadyExist = false;
-            Console.WriteLine(allPopularTrips);
+            if (trip == null)
+                throw new TripNotFoundException($"{typeof(PopularTripRepository).Name}: " +
+                                                $"Trip not found");
+            if (trip.Source == null || trip.Destination == null)
+                throw new StopNotFoundException($"{typeof(PopularTripRepository).Name}: " +
+                                                $"Source or Destination of trip {trip.Id} not found");
             foreach (var popularTrip in allPopularTrips)
             {
-
                 if (popularTrip.Source.StopId == trip.Source.StopId && popularTrip.Destination.StopId == trip.Destination.StopId)
                 {
                     popularTrip.Count += 1;
@@ -34,38 +38,25 @@ namespace Tavisca.Tripster.MongoDB.Repository
             }
 
         }
-        PopularTrip TranslateTripToPopularTrip(Trip trip)
+        private PopularTrip TranslateTripToPopularTrip(Trip trip)
         {
-            PopularTrip popularTrip = new PopularTrip();
-            if (trip != null)
+            var popularTrip = new PopularTrip
             {
-                popularTrip.Source = TranslateStopToPopularTripStop(trip.Source);
-                popularTrip.Destination = TranslateStopToPopularTripStop(trip.Destination);
-            }
-
+                Source = TranslateStopToPopularTripStop(trip.Source),
+                Destination = TranslateStopToPopularTripStop(trip.Destination)
+            };
             return popularTrip;
         }
-        PopularTripStop TranslateStopToPopularTripStop(Stop stop)
+        private PopularTripStop TranslateStopToPopularTripStop(Stop stop)
         {
-
-            PopularTripStop popularTripStop = new PopularTripStop();
-            if (stop != null)
+            var popularTripStop = new PopularTripStop
             {
-                popularTripStop.StopId = stop.StopId;
-                popularTripStop.Name = stop.Name;
-                popularTripStop.Location = stop.Location;
-            }
+                StopId = stop.StopId,
+                Name = stop.Name,
+                Location = stop.Location
+            };
             return popularTripStop;
         }
-
-
-        public async Task<IEnumerable<PopularTrip>> GetAllPopularTrips()
-        {
-            var popularTripList = (await GetAll()).OrderByDescending(obj => obj.Count);
-            return popularTripList;
-
-        }
-
         public async Task<IEnumerable<PopularTrip>> GetPopularTripsByLimit(int limit)
         {
             var popularTripList = (await GetAll()).OrderByDescending(obj => obj.Count).Take(limit);

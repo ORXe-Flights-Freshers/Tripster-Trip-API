@@ -17,17 +17,10 @@ namespace Tavisca.Tripster.Web.Controllers
     {
         private readonly IPopularTripService _popularTripService;
         private readonly ILogger<TripController> _logger;
-        public PopularTripController( IPopularTripService popularTripService, ILogger<TripController> logger)
+        public PopularTripController(IPopularTripService popularTripService, ILogger<TripController> logger)
         {
             _popularTripService = popularTripService;
             _logger = logger;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllPopularTrips()
-        {
-            var popularTrips = await _popularTripService.GetAllPopularTrips();
-            return Ok(popularTrips);
         }
 
         [HttpGet("{limit}")]
@@ -36,8 +29,5 @@ namespace Tavisca.Tripster.Web.Controllers
             var popularTrips = await _popularTripService.GetPopularTripsByLimit(limit);
             return Ok(popularTrips);
         }
-
-
-
     }
 }
