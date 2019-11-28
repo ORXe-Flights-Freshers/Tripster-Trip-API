@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -44,6 +45,7 @@ namespace Tavisca.Tripster.Web.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateTrip")]
         public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] Trip trip)
         {
             var tripResponse = await _tripService.UpdateTrip(id, trip);

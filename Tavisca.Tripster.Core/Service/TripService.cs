@@ -29,6 +29,7 @@ namespace Tavisca.Tripster.Core.Service
 
         public async Task<TripResponse> GetTripById(Guid id)
         {
+           
             var trip = await _tripRepository.GetTripById(id);
             if(trip == null)
             {
@@ -46,11 +47,42 @@ namespace Tavisca.Tripster.Core.Service
 
         public async Task<IEnumerable<Trip>> GetAllTrips()
         {
+            string date = "Fri Nov 22 2019 15:24:30 GMT+0530 (India Standard Time)";
+            var valid = DateTime.TryParse(date, out DateTime dt);
+            Console.WriteLine(dt.ToString());
             return await _tripRepository.GetAll();
+        }
+
+        private async Task<bool> ValidateIncomingTrip(Guid id, Trip trip)
+        {
+            var storedTrip = await _tripRepository.GetTripById(id);
+            if (storedTrip == null)
+                return false;
+            if (trip.UserId == null)
+            {
+                if (storedTrip.UserId == null)
+                    return true;
+                return false;
+            }
+            else
+            {
+                if (storedTrip.UserId == null)
+                    return false;
+                else if (storedTrip.UserId != trip.UserId)
+                    return false;
+                return true;
+            }
         }
 
         public async Task<TripResponse> UpdateTrip(Guid id, Trip trip)
         {
+            if(!ValidateIncomingTrip(id, trip).Result)
+            {
+                _tripResponse.IsSuccess = false;
+                _tripResponse.Message = $"An unauthorized attempt was made to update trip {id}";
+                _logger?.LogCritical($"{typeof(TripService).Name}: {_tripResponse.Message}");
+                return _tripResponse;
+            }
             var updatedTrip = await _tripRepository.UpdateTrip(id, trip);
             if(updatedTrip == null)
             {

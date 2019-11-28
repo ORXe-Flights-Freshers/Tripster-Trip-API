@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -14,6 +15,8 @@ using Tavisca.Tripster.Core.Provider;
 using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.MongoDB.Repository;
 using Tavisca.Tripster.Web.Middleware;
+using Tavisca.Tripster.Web.Security.TripAuthorization;
+using Tavisca.Tripster.Web.Security.UserAuthorization;
 
 namespace Tavisca.Tripster.Web
 {
@@ -62,9 +65,19 @@ namespace Tavisca.Tripster.Web
             services.AddScoped<UserRepository>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddAuthorization(options =>
+                                       options.AddPolicy("ValidUserId", policy =>
+                                                         policy.Requirements.Add(new UserIdRequirement())));
 
+            services.AddSingleton<IAuthorizationHandler, UserAuthorizationHandler>();
 
             services.AddScoped<ITripService, TripService>();
+            
+            services.AddAuthorization(options =>
+                                       options.AddPolicy("UpdateTrip", policy =>
+                                                         policy.Requirements.Add(new UpdateTripRequirement())));
+
+            services.AddSingleton<IAuthorizationHandler, TripAuthorizationHandler>();
             services.AddScoped<IPopularTripService, PopularTripService>();
             services.AddScoped<PopularTripRepository>();
             services.AddScoped<TripResponse>();

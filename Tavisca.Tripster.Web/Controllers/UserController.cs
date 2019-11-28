@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -41,8 +42,8 @@ namespace Tavisca.Tripster.Web.Controllers
             return NotFound(userResponse.Message);
         }
 
-      
 
+        [Authorize(Policy = "ValidUserId")]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
