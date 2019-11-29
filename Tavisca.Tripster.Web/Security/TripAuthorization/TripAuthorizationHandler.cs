@@ -12,7 +12,7 @@ namespace Tavisca.Tripster.Web.Security.TripAuthorization
 {
     public class TripAuthorizationHandler : AuthorizationHandler<UpdateTripRequirement>
     {
-        private string _requestBody = "";
+        private string _requestBody = string.Empty;
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, UpdateTripRequirement requirement)
         {
             var authorizationFilter = (AuthorizationFilterContext)context.Resource;
@@ -26,7 +26,7 @@ namespace Tavisca.Tripster.Web.Security.TripAuthorization
             {
             }
             string headers = request.Headers["Authorization"];
-            string idToken = "";
+            string idToken = string.Empty;
             if (headers != null && headers.Contains("Bearer"))
             {
                 idToken = headers.Replace("Bearer-", string.Empty);
@@ -36,15 +36,15 @@ namespace Tavisca.Tripster.Web.Security.TripAuthorization
             {
                 _requestBody = reader.ReadToEnd();
             }
-            
-                var trip = JsonConvert.DeserializeObject<Trip>(_requestBody);
 
-            if(trip.UserId == "" || trip.UserId == null || trip.UserId == string.Empty)
+            var trip = JsonConvert.DeserializeObject<Trip>(_requestBody);
+
+            if(string.IsNullOrWhiteSpace(trip.UserId))
             {
                 context.Succeed(requirement);
             }
             
-            else if(idToken == "" || idToken == null || idToken == string.Empty)
+            else if(string.IsNullOrWhiteSpace(idToken))
             {
                 context.Fail();
             }

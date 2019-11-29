@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tavisca.Tripster.Core.Service;
 using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.Repository;
 
 namespace Tavisca.Tripster.Web.Controllers
 {

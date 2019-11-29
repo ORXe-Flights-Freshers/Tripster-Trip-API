@@ -85,8 +85,7 @@ namespace Tavisca.Tripster.Web
             services.AddScoped<PopularTripResponse>();
 
             services.AddSingleton<FuelPriceService>();
-
-
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -111,13 +110,12 @@ namespace Tavisca.Tripster.Web
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
             loggerFactory.AddSerilog();
             app.UseHsts();
             app.UseMiddleware<SerilogMiddleware>();
             app.UseCors("AllowAll");
             app.UseMvc();
-         
+
         }
     }
 }

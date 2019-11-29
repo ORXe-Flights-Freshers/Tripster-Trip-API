@@ -25,13 +25,11 @@ namespace Tavisca.Tripster.Core.Service
             var popularTrips = await _popularTripRepository.GetPopularTripsByLimit(limit);
             if (popularTrips == null)
             {
-                _popularTripResponse.IsSuccess = false;
                 _popularTripResponse.Message = "Popular trips do not exist";
                 _logger?.LogInformation(_popularTripResponse.Message);
             }
             else
             {
-                _popularTripResponse.IsSuccess = true;
                 _popularTripResponse.PopularTrips = popularTrips;
             }
             return _popularTripResponse;
@@ -41,17 +39,16 @@ namespace Tavisca.Tripster.Core.Service
         {
             try
             {
-                await _popularTripRepository.AddToPopularTrip(trip);
-                _popularTripResponse.IsSuccess = true;
+                await _popularTripRepository.AddToPopularTrip(trip); 
             }
             catch (TripNotFoundException tnfe)
             {
-                _popularTripResponse.IsSuccess = false;
+                _popularTripResponse.Message = tnfe.Message;
                 _logger?.LogError(tnfe.Message);
             }
             catch (StopNotFoundException snfe)
             {
-                _popularTripResponse.IsSuccess = false;
+                _popularTripResponse.Message = snfe.Message;
                 _logger?.LogError(snfe.Message);
             }
         }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tavisca.Tripster.Contracts.Interface;
@@ -21,14 +20,7 @@ namespace Tavisca.Tripster.Web.Controllers
             _userService = userService;
             _logger = logger;
         }
-
-        [HttpGet]
-        public async Task<IEnumerable<User>> GetAllUsers()
-        {
-            var userList = await _userService.GetAllUsers();
-            return userList;
-        }
-
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
@@ -41,7 +33,6 @@ namespace Tavisca.Tripster.Web.Controllers
             _logger.LogError($"{typeof(UserController).Name}: GetUserById was not successfully completed");
             return NotFound(userResponse.Message);
         }
-
 
         [Authorize(Policy = "ValidUserId")]
         [HttpPost]

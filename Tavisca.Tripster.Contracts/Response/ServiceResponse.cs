@@ -6,7 +6,14 @@ namespace Tavisca.Tripster.Contracts.Response
 {
     public class ServiceResponse
     {
-        public bool IsSuccess { get; set; }
+        public bool IsSuccess
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(Message);
+            }
+            private set { }
+        }
         public string Message { get; set; }
     }
 }

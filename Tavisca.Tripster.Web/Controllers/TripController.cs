@@ -23,14 +23,7 @@ namespace Tavisca.Tripster.Web.Controllers
             _popularTripService = popularTripService;
             _logger = logger;
         }
-
-        [HttpGet]
-        public async Task<IEnumerable<Trip>> GetAllTrips()
-        {
-            var tripList = await _tripService.GetAllTrips();
-            return tripList;
-        }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTripById(Guid id)
         {
@@ -65,7 +58,7 @@ namespace Tavisca.Tripster.Web.Controllers
             await _popularTripService.AddToPopularTrip(trip);
             return Ok(trip);
         }
-
+        
         [HttpGet("userid/{id}")]
         public async Task<IEnumerable<Trip>> GetTripByUserId(string id)
         {

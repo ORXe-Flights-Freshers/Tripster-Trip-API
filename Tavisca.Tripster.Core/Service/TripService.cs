@@ -33,13 +33,11 @@ namespace Tavisca.Tripster.Core.Service
             var trip = await _tripRepository.GetTripById(id);
             if(trip == null)
             {
-                _tripResponse.IsSuccess = false;
                 _tripResponse.Message = $"Trip with {id} not found";
                 _logger?.LogError($"{typeof(TripService).Name}: {_tripResponse.Message}");
             }
             else
             {
-                _tripResponse.IsSuccess = true;
                 _tripResponse.Trip = trip;
             }
             return _tripResponse;
@@ -58,15 +56,15 @@ namespace Tavisca.Tripster.Core.Service
             var storedTrip = await _tripRepository.GetTripById(id);
             if (storedTrip == null)
                 return false;
-            if (trip.UserId == null)
+            if (string.IsNullOrWhiteSpace(trip.UserId))
             {
-                if (storedTrip.UserId == null)
+                if (string.IsNullOrWhiteSpace(storedTrip.UserId) == true)
                     return true;
                 return false;
             }
             else
             {
-                if (storedTrip.UserId == null)
+                if (string.IsNullOrWhiteSpace(storedTrip.UserId) == true)
                     return false;
                 else if (storedTrip.UserId != trip.UserId)
                     return false;
@@ -76,9 +74,8 @@ namespace Tavisca.Tripster.Core.Service
 
         public async Task<TripResponse> UpdateTrip(Guid id, Trip trip)
         {
-            if(!ValidateIncomingTrip(id, trip).Result)
+            if(ValidateIncomingTrip(id, trip).Result == false)
             {
-                _tripResponse.IsSuccess = false;
                 _tripResponse.Message = $"An unauthorized attempt was made to update trip {id}";
                 _logger?.LogCritical($"{typeof(TripService).Name}: {_tripResponse.Message}");
                 return _tripResponse;
@@ -86,13 +83,11 @@ namespace Tavisca.Tripster.Core.Service
             var updatedTrip = await _tripRepository.UpdateTrip(id, trip);
             if(updatedTrip == null)
             {
-                _tripResponse.IsSuccess = false;
                 _tripResponse.Message = $"Trip with {id} not found";
                 _logger?.LogError($"{typeof(TripService).Name}: {_tripResponse.Message}");
             }
             else
             {
-                _tripResponse.IsSuccess = true;
                 _tripResponse.Trip = updatedTrip;
             }
             return _tripResponse;

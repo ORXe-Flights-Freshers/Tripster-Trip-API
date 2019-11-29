@@ -32,13 +32,11 @@ namespace Tavisca.Tripster.Core.Service
             var user = await _userRepository.GetUserById(id);
             if(user == null)
             {
-                _userResponse.IsSuccess = false;
                 _userResponse.Message = $"User with {id} not found";
                 _logger.LogError($"{typeof(UserService).Name}: {_userResponse.Message}");
             }
             else
-            {
-                _userResponse.IsSuccess = true;
+            { 
                 _userResponse.User = user;
             }
             return _userResponse;
@@ -54,13 +52,11 @@ namespace Tavisca.Tripster.Core.Service
             var updatedUser = await _userRepository.CreateUser(id, user);
             if(updatedUser == null)
             {
-                _userResponse.IsSuccess = false;
                 _userResponse.Message = $"User with {id} not found";
                 _logger.LogError($"{typeof(UserService).Name}: {_userResponse.Message}");
             }
             else
             {
-                _userResponse.IsSuccess = true;
                 _userResponse.User = updatedUser;
             }
             return _userResponse;
