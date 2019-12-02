@@ -45,9 +45,6 @@ namespace Tavisca.Tripster.Core.Service
 
         public async Task<IEnumerable<Trip>> GetAllTrips()
         {
-            string date = "Fri Nov 22 2019 15:24:30 GMT+0530 (India Standard Time)";
-            var valid = DateTime.TryParse(date, out DateTime dt);
-            Console.WriteLine(dt.ToString());
             return await _tripRepository.GetAll();
         }
 
@@ -65,7 +62,7 @@ namespace Tavisca.Tripster.Core.Service
             else
             {
                 if (string.IsNullOrWhiteSpace(storedTrip.UserId) == true)
-                    return false;
+                    return true;
                 else if (storedTrip.UserId != trip.UserId)
                     return false;
                 return true;
