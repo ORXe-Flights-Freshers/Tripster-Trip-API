@@ -1,52 +1,74 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Threading.Tasks;
-using Tavisca.Tripster.Contracts.Service;
-using Tavisca.Tripster.Core.Validation;
+using Tavisca.Tripster.Contracts.Interface;
+using Tavisca.Tripster.Contracts.Response;
 using Tavisca.Tripster.Data.Models;
-using Tavisca.Tripster.MongoDB.UnitOfWork;
+using Tavisca.Tripster.MongoDB.Repository;
 
 namespace Tavisca.Tripster.Core.Service
 {
     public class TripService : ITripService
     {
-        private TripUnitOfWork _tripUnitOfWork;
-        private Validator<Trip> _validator;
-        public TripService(TripUnitOfWork tripUnitOfWork)
+        private TripRepository _tripRepository;
+        private TripResponse _tripResponse;
+        private readonly ILogger<TripService> _logger;
+        public TripService(TripRepository tripRepository,
+                           TripResponse tripResponse, ILogger<TripService> logger = null)
         {
-            _validator = new Validator<Trip>();
-            _tripUnitOfWork = tripUnitOfWork;
-        }
-        public async Task Add(Trip trip)
-        {
-            await _tripUnitOfWork.Add(trip);
-        }
-
-        public async Task Delete(Guid id)
-        {
-            await  _tripUnitOfWork.Delete(id);
+            _tripRepository = tripRepository;
+            _tripResponse = tripResponse;
+            _logger = logger;
         }
 
-        public async Task<Response<Trip>> Get(Guid id)
+        public async Task CreateTrip(Trip trip)
         {
-            var trip = await _tripUnitOfWork.Get(id);
-            _validator.Entity = trip;
-            _validator.ID = id;
-            var response = _validator.GetResponse();
-            return await Task.Run(() => response);
+            await _tripRepository.Create(trip);
         }
 
-        public async Task<IEnumerable<Trip>> GetAll()
+        public async Task<TripResponse> GetTripById(Guid id)
         {
-            return await  _tripUnitOfWork.GetAll();
+            var trip = await _tripRepository.GetTripById(id);
+            if(trip == null)
+            {
+                _tripResponse.IsSuccess = false;
+                _tripResponse.Message = $"Trip with {id} not found";
+                _logger?.LogError($"{typeof(TripService).Name}: {_tripResponse.Message}");
+            }
+            else
+            {
+                _tripResponse.IsSuccess = true;
+                _tripResponse.Trip = trip;
+            }
+            return _tripResponse;
         }
 
-        public async Task<Trip> Update(Guid id, Trip trip)
+        public async Task<IEnumerable<Trip>> GetAllTrips()
         {
-            var updatedTrip = await _tripUnitOfWork.Update(id, trip);
-            return updatedTrip;
+            return await _tripRepository.GetAll();
+        }
+
+        public async Task<TripResponse> UpdateTrip(Guid id, Trip trip)
+        {
+            var updatedTrip = await _tripRepository.UpdateTrip(id, trip);
+            if(updatedTrip == null)
+            {
+                _tripResponse.IsSuccess = false;
+                _tripResponse.Message = $"Trip with {id} not found";
+                _logger?.LogError($"{typeof(TripService).Name}: {_tripResponse.Message}");
+            }
+            else
+            {
+                _tripResponse.IsSuccess = true;
+                _tripResponse.Trip = updatedTrip;
+            }
+            return _tripResponse;
+        }
+
+        public Task<IEnumerable<Trip>> GetTripByUserID(string id)
+        {
+           return   _tripRepository.GetTripByUserId(id);
         }
     }
 }
