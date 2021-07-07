@@ -24,8 +24,7 @@ namespace Tavisca.Tripster.Web.Middleware
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
-
-        // ReSharper disable once UnusedMember.Global
+        
         public async Task Invoke(HttpContext httpContext)
         {
             if (httpContext == null) throw new ArgumentNullException(nameof(httpContext));
@@ -42,7 +41,6 @@ namespace Tavisca.Tripster.Web.Middleware
                 var log = level == LogEventLevel.Error ? LogForErrorContext(httpContext) : Log;
                 log.Write(level, MessageTemplate, httpContext.Request.Method, GetPath(httpContext), statusCode, elapsedMs);
             }
-            // Never caught, because `LogException()` returns false.
             catch (Exception ex) when (LogException(httpContext, GetElapsedMilliseconds(start, Stopwatch.GetTimestamp()), ex)) { }
         }
 
